@@ -47,8 +47,10 @@ export const saveImage = async (imageLocation, fileName) => {
 }
 
 export const deleteContact = async (contactName) => {
-  const deleteDirectory = `${contactDirectory}/${contactName}`
-  FileSystem.deleteAsync(deleteDirectory)
+  const deleteContactDirectory = `${contactDirectory}/${contactName}`
+  const deleteImageDirectory = `${imageDirectory}/${contactName}`
+  FileSystem.deleteAsync(deleteContactDirectory)
+  FileSystem.deleteAsync(deleteImageDirectory)
 }
 
 const setUpDirectory = async () => {

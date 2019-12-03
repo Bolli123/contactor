@@ -4,26 +4,25 @@ import PropTypes from 'prop-types';
 import Contact from '../../components/contact'
 
 const ContactList = ({
-  contacts, onLongPress, id, selectedContacts
+  contacts, onLongPress, selectedContacts
 }) => (
   <View style={{ flex: 1 }}>
     <FlatList
       numColumns={1}
-      data={contacts}
+      data={contacts.sort((a, b) => a.name.localeCompare(b.name))}
       extraData={selectedContacts}
-      renderItem={({ item: { name, thumbnailPhoto, id, phoneNumber } }) => {
+      renderItem={({ item: { name, thumbnailPhoto, phoneNumber } }) => {
         return (
           <Contact
             name={name}
             thumbnailPhoto={thumbnailPhoto}
-            id={id}
             phoneNumber={phoneNumber}
             onLongPress={onLongPress}
-            isSelected={selectedContacts.indexOf(id) !== -1}
+            isSelected={selectedContacts.indexOf(name) !== -1}
           />
         );
       }}
-      keyExtractor={(contact) => (`${contact.phoneNumber}`)}
+      keyExtractor={(contact) => (`${contact.name}`)}
     />
   </View>
 );
@@ -32,12 +31,10 @@ ContactList.propTypes = {
   contacts: PropTypes.arrayOf(PropTypes.shape({
     name: PropTypes.string.isRequired,
     thumbnailPhoto: PropTypes.string.isRequired,
-    id: PropTypes.number.isRequired,
     phoneNumber: PropTypes.string.isRequired
   })).isRequired,
   onLongPress: PropTypes.func.isRequired,
-  selectedContacts: PropTypes.arrayOf(PropTypes.number).isRequired,
-  id: PropTypes.number.isRequired
+  selectedContacts: PropTypes.arrayOf(PropTypes.string).isRequired,
 }
 
 export default ContactList;

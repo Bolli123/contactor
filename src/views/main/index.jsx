@@ -70,7 +70,7 @@ class Main extends React.Component {
 }
 deleteSelected() {
   this.setState({loadingContacts: true})
-  const { selectedContacts, contacts } = this.state
+  const { selectedContacts, contacts, filteredContacts } = this.state
   const retContacts = []
   for (const [index, value] of contacts.entries()) {
     if (!selectedContacts.includes(value.name)) {
@@ -98,7 +98,7 @@ deleteSelected() {
 
   async addContact() {
     this.setState({loadingContacts: true})
-    const { newContactName, newPhoto, contacts, newPhoneNumber } = this.state
+    const { newContactName, newPhoto, contacts, newPhoneNumber, filteredContacts } = this.state
     if (newContactName === '' || newPhoto === '' || newPhoneNumber === '') {
       return
     }

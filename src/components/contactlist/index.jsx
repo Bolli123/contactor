@@ -11,11 +11,12 @@ const ContactList = ({
       numColumns={1}
       data={contacts.sort((a, b) => a.name.localeCompare(b.name))}
       extraData={selectedContacts}
-      renderItem={({ item: { name, thumbnailPhoto } }) => {
+      renderItem={({ item: { name, thumbnailPhoto, phoneNumber } }) => {
         return (
           <Contact
             name={name}
             thumbnailPhoto={thumbnailPhoto}
+            phoneNumber={phoneNumber}
             onLongPress={onLongPress}
             isSelected={selectedContacts.indexOf(name) !== -1}
           />

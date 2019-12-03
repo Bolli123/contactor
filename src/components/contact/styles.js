@@ -19,7 +19,7 @@ export default StyleSheet.create({
     right: 15,
     fontSize: 16,
   },
-  boardContainer: {
+  contactContainer: {
     flex: 1,
     flexDirection: 'row',
     margin: 10,

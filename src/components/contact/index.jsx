@@ -6,12 +6,12 @@ import styles from './styles'
 import { AntDesign } from '@expo/vector-icons';
 
 const Contact = ({
-  name, thumbnailPhoto, id, onLongPress, isSelected, navigation: { navigate }
+  name, thumbnailPhoto, phoneNumber, onLongPress, isSelected, navigation: { navigate }
 }) => (
   <TouchableOpacity
     activeOpacity={0.8}
     onLongPress={() => onLongPress(name)}
-    onPress={() => navigate('Contact', { ContactId: id })}
+    onPress={() => navigate('Details', { thumbnailPhoto: thumbnailPhoto, name: name, phoneNumber: phoneNumber })}
   >
     {
       isSelected
@@ -39,7 +39,7 @@ const Contact = ({
 Contact.propTypes = {
   name: PropTypes.string.isRequired,
   thumbnailPhoto: PropTypes.string.isRequired,
-  id: PropTypes.number.isRequired,
+  phoneNumber: PropTypes.string.isRequired,
   onLongPress: PropTypes.func.isRequired,
   isSelected: PropTypes.bool.isRequired,
   navigation: PropTypes.shape({

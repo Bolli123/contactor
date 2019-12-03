@@ -1,0 +1,6 @@
+Contact: [object Object]
+contactString: {"name":"Matthias","phoneNumber":"6929968",
+"thumbnailPhoto":"file:///var/mobile/Containers/Data/Application/095B2D35-433D-4E0B-B23D-5C0538EE42B1/Documents/ExponentExperienceData/%2540anonymous%252Ftoodler-065eb6b0-e2c4-4786-b84b-f620812ae5cf/images/Matthias"}
+
+Contact: object
+contactString: string

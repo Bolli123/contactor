@@ -85,7 +85,7 @@ deleteSelected() {
 
   async addContact() {
     this.setState({loadingContacts: true})
-    const { newContactName, newPhoto, contacts, newPhoneNumber } = this.state
+    const { newContactName, newPhoto, contacts, newPhoneNumber, filteredContacts } = this.state
     if (newContactName === '' || newPhoto === '' || newPhoneNumber === '') {
       return
     }

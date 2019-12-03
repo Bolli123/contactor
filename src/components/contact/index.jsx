@@ -10,7 +10,7 @@ const Contact = ({
 }) => (
   <TouchableOpacity
     activeOpacity={0.8}
-    onLongPress={() => onLongPress(id)}
+    onLongPress={() => onLongPress(name)}
     onPress={() => navigate('Contact', { ContactId: id })}
   >
     {

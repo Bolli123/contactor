@@ -3,15 +3,14 @@ import { View, Text } from 'react-native';
 import Toolbar from '../../components/Toolbar';
 import ContactList from '../../components/contactlist';
 import AddModal from '../../components/AddModal';
+import data from '../../resources/data.json'
 import styles from '../../views/main/styles'
 import { saveContact, getAllContacts } from '../../services/fileService';
 import { takePhoto, selectFromCameraRoll } from '../../services/imageService';
-import { connect } from 'react-redux'
-import { actionAddContact, actionDeleteContacts } from '../../actions/contactActions'
 
 class Main extends React.Component {
   state = {
-    contacts: this.data,
+    contacts: data.contacts,
     selectedContacts: [],
     isAddModalOpen: false,
     loadingContacts: false,
@@ -30,19 +29,20 @@ class Main extends React.Component {
   async _fetchItems() {
     this.setState({loadingContacts: true})
     const contacts = await getAllContacts()
-    this.setState({ contacts, loadingContacts: false})
+    console.log(contacts)
+    this.setState({ contacts: contacts, loadingContacts: false})
   }
-  onContactLongPress(id) {
+  onContactLongPress(name) {
     const { selectedContacts } = this.state;
-    if (selectedContacts.indexOf(id) !== -1) {
+    if (selectedContacts.indexOf(name) !== -1) {
       // contact is already in the list
       this.setState({
-        selectedContacts: selectedContacts.filter(contact => contact !== id)
+        selectedContacts: selectedContacts.filter(contact => contact !== name)
       });
     } else {
       //add contact
       this.setState({
-        selectedContacts: [ ...selectedContacts, id ]
+        selectedContacts: [ ...selectedContacts, name ]
       });
     }
   }
@@ -70,8 +70,6 @@ deleteSelected() {
     contacts: retContacts,
     selectedContacts: []
   })
-  const { actionDeleteContacts } = this.props;
-  actionDeleteContacts(retContacts)
   }
 
   setContactName(name) {
@@ -104,8 +102,6 @@ deleteSelected() {
       loadContact: false
     })
     this.setState({ newContactId: newContactId + 1 })
-    const { actionAddContact } = this.props;
-    actionAddContact(newContactId, newContactName, newPhoneNumber, newPhoto)
   }
 
   displayCaption() {
@@ -130,7 +126,7 @@ deleteSelected() {
           pagename ={'Contacts'}
         />
         <ContactList
-          onLongPress={(id) => this.onContactLongPress(id)}
+          onLongPress={(name) => this.onContactLongPress(name)}
           contacts={ contacts }
           selectedContacts={selectedContacts}/>
           <View style={styles.block_counter}>
@@ -154,8 +150,4 @@ deleteSelected() {
   }
 }
 
-const mapStateToProps = reduxStoreState => {
-  return {contacts: reduxStoreState.contact}
-}
-
-export default connect(mapStateToProps, { actionAddContact, actionDeleteContacts })(Main); // Returns a connected component
+export default Main; // Returns a connected component

@@ -1,5 +1,5 @@
 import React from 'react';
-import { View, Text, Image, Button } from 'react-native';
+import { View, Text, Image, Button, TouchableOpacity } from 'react-native';
 import call from 'react-native-phone-call';
 import Toolbar from '../../components/Toolbar';
 import AddModal from '../../components/AddModal';
@@ -61,18 +61,14 @@ class Details extends React.Component {
             source={{ uri: thumbnailPhoto }}
           />
           <Text style={styles.name}>{name}</Text>
-          <View style={styles.numberContainer}>
+          <TouchableOpacity onPress={this.call} style={styles.numberContainer}>
             <Entypo
             style={styles.icon}
             name="phone"
             />
             <Text style={styles.phoneNumber}>
             {phoneNumber}</Text>
-          </View>
-          <Button
-          title="Call"
-          onPress={this.call}
-          />
+          </TouchableOpacity>
         </View>
         <AddModal
           isOpen={isAddModalOpen}

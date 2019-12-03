@@ -12,5 +12,23 @@
             "phoneNumber": "11111111",
             "thumbnailPhoto": "https://d2x5ku95bkycr3.cloudfront.net/App_Themes/Common/images/profile/0_200.png"
         }
+        {
+            "id": 2,
+            "name": "Davíð Fannar Ragnarsson",
+            "phoneNumber": "8685956",
+            "thumbnailPhoto": "https://d2x5ku95bkycr3.cloudfront.net/App_Themes/Common/images/profile/0_200.png"
+        }
+        {
+            "id": 2,
+            "name": "Björn Breki Þorbjörnsson",
+            "phoneNumber": "8970038",
+            "thumbnailPhoto": "https://d2x5ku95bkycr3.cloudfront.net/App_Themes/Common/images/profile/0_200.png"
+        }
+        {
+            "id": 2,
+            "name": "Matthías Finnur Vignisson",
+            "phoneNumber": "6929968",
+            "thumbnailPhoto": "https://d2x5ku95bkycr3.cloudfront.net/App_Themes/Common/images/profile/0_200.png"
+        }
     ]
 }

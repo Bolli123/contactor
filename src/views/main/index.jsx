@@ -19,8 +19,8 @@ class Main extends React.Component {
     newContactName: '',
     newContactId: 0,
     newPhoto: '',
-    newPhoneNumber: ''
-  }
+    newPhoneNumber: '',
+    }
   async componentDidMount() {
     const { contacts } = this.state
     setState ({

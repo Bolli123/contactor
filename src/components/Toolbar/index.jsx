@@ -1,8 +1,7 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 import {
-  View, TouchableHighlight,
-  Text, SearchBar
+  View, TouchableHighlight, Text
 } from 'react-native';
 import styles from './styles'
 
@@ -10,13 +9,6 @@ const Toolbar = ({
   onAdd, onRemove, hasSelectedContacts, pagename
 }) => (
   <View styleName="horizontal" style={styles.toolbar}>
-    <SearchBar
-      placeholder="Search"
-      lightTheme
-      round
-      onChangeText={text => this.searchFilterFunction(text)}
-      autoCorrect={false}
-    />
     <TouchableHighlight onPress={onAdd} style={styles.button}>
       <Text style={styles.buttonText}>
         Add {pagename}

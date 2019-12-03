@@ -1,5 +1,6 @@
 import React from 'react';
 import { View, Text } from 'react-native';
+import { SearchBar } from 'react-native-elements';
 import Toolbar from '../../components/Toolbar';
 import ContactList from '../../components/contactlist';
 import AddModal from '../../components/AddModal';
@@ -11,16 +12,20 @@ import { takePhoto, selectFromCameraRoll } from '../../services/imageService';
 class Main extends React.Component {
   state = {
     contacts: data.contacts,
+    filteredContacts: data.contacts,
     selectedContacts: [],
     isAddModalOpen: false,
     loadingContacts: false,
     newContactName: '',
     newContactId: 0,
     newPhoto: '',
-    newPhoneNumber: ''
-  }
+    newPhoneNumber: '',
+    }
   async componentDidMount() {
     const { contacts } = this.state
+    setState ({
+      filteredContacts: contacts,
+    })
     const newId = contacts[contacts.length-1].id + 1
     this.setState( {newContactId: newId} )
     await this._fetchItems()
@@ -119,10 +124,43 @@ deleteSelected() {
     }
     return <Text style={styles.selectedText}> {selectedContacts.length} {itemCaption} selected </Text>
   }
+
+  searchFilterFunction = text => {
+    const { contacts } = this.state;
+    this.setState({
+      value: text,
+    });
+    const filteredOutput = contacts.filter(item => {
+      const itemData = `${item.name.toUpperCase()}`;
+      const textData = text.toUpperCase();
+
+      return itemData.indexOf(textData) > -1;
+    });
+    this.setState({
+      filteredContacts: filteredOutput,
+    });
+  };
+
+  call = () => {
+    const contactNumber = {
+      number: '8970038',
+      prompt: false
+    }
+    call(contactNumber).catch(console.error);
+  }
+
   render() {
-    const { selectedContacts, contacts, isAddModalOpen } = this.state;
+    const { selectedContacts, filteredContacts, isAddModalOpen, value } = this.state;
     return (
       <View style={{ flex: 1}}>
+        <SearchBar
+          placeholder="Search"
+          lightTheme
+          round
+          onChangeText={text => this.searchFilterFunction(text)}
+          autoCorrect={false}
+          value={this.state.value}
+        />
         <Toolbar
           hasSelectedContacts={selectedContacts.length > 0}
           onAdd={() => this.setState({ isAddModalOpen: true})}
@@ -131,7 +169,7 @@ deleteSelected() {
         />
         <ContactList
           onLongPress={(name) => this.onContactLongPress(name)}
-          contacts={ contacts }
+          contacts={ filteredContacts }
           selectedContacts={selectedContacts}/>
           <View style={styles.block_counter}>
           {this.displayCaption()}

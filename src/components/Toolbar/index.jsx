@@ -1,6 +1,8 @@
 import React from 'react';
 import PropTypes from 'prop-types';
-import { View, TouchableHighlight, Text} from 'react-native';
+import {
+  View, TouchableHighlight, Text
+} from 'react-native';
 import styles from './styles'
 
 const Toolbar = ({

@@ -1,5 +1,6 @@
 import React from 'react';
-import { View, Text, Image } from 'react-native';
+import { View, Text, Image, Button } from 'react-native';
+import call from 'react-native-phone-call';
 import Toolbar from '../../components/Toolbar';
 import AddModal from '../../components/AddModal';
 import styles from '../../views/details/styles';
@@ -7,7 +8,7 @@ import { Entypo } from '@expo/vector-icons';
 
 class Details extends React.Component {
   state = {
-    thumbnailPhoto: '',
+    thumbnailPhoto: null,
     name: '',
     phoneNumber: '',
     isAddModalOpen: false,
@@ -34,12 +35,21 @@ class Details extends React.Component {
     return <Text style={styles.selectedText}> {selectedLists.length} {itemCaption} selected </Text>
   }
 
+  call = () => {
+    const { phoneNumber } = this.state;
+    const contactNumber = {
+      number: phoneNumber,
+      prompt: false,
+    }
+    call(contactNumber).catch(console.error);
+  }
+
   render() {
     const { thumbnailPhoto, name, phoneNumber, isAddModalOpen } = this.state;
     return (
       <View style={{ flex: 1}}>
         <Toolbar
-          hasSelectedContacts={0}
+          hasSelectedContacts={true}
           onAdd={() => this.setState({ isAddModalOpen: true})}
           onRemove={() => this.deleteSelected()}
           pagename ={'details'}
@@ -59,6 +69,10 @@ class Details extends React.Component {
             <Text style={styles.phoneNumber}>
             {phoneNumber}</Text>
           </View>
+          <Button
+          title="Call"
+          onPress={this.call}
+          />
         </View>
         <AddModal
           isOpen={isAddModalOpen}

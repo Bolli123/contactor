@@ -6,12 +6,12 @@ import styles from './styles'
 import { AntDesign } from '@expo/vector-icons';
 
 const Contact = ({
-  name, thumbnailPhoto, id, onLongPress, isSelected, navigation: { navigate }
+  name, thumbnailPhoto, id, phoneNumber, onLongPress, isSelected, navigation: { navigate }
 }) => (
   <TouchableOpacity
     activeOpacity={0.8}
     onLongPress={() => onLongPress(id)}
-    onPress={() => navigate('Contact', { ContactId: id })}
+    onPress={() => navigate('Details', { thumbnailPhoto: thumbnailPhoto, name: name, phoneNumber: phoneNumber })}
   >
     {
       isSelected

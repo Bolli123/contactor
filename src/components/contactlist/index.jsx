@@ -11,12 +11,13 @@ const ContactList = ({
       numColumns={1}
       data={contacts}
       extraData={selectedContacts}
-      renderItem={({ item: { name, thumbnailPhoto, id } }) => {
+      renderItem={({ item: { name, thumbnailPhoto, id, phoneNumber } }) => {
         return (
           <Contact
             name={name}
             thumbnailPhoto={thumbnailPhoto}
             id={id}
+            phoneNumber={phoneNumber}
             onLongPress={onLongPress}
             isSelected={selectedContacts.indexOf(id) !== -1}
           />

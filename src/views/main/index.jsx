@@ -4,14 +4,14 @@ import Toolbar from '../../components/Toolbar';
 import ContactList from '../../components/contactlist';
 import AddModal from '../../components/AddModal';
 import styles from '../../views/main/styles'
-import { addImage, getAllImages } from '../../services/fileService';
+import { saveContact, getAllContacts } from '../../services/fileService';
 import { takePhoto, selectFromCameraRoll } from '../../services/imageService';
 import { connect } from 'react-redux'
 import { actionAddContact, actionDeleteContacts } from '../../actions/contactActions'
 
 class Main extends React.Component {
   state = {
-    contacts: this.props.contacts,
+    contacts: this.data,
     selectedContacts: [],
     isAddModalOpen: false,
     loadingContacts: false,
@@ -24,6 +24,13 @@ class Main extends React.Component {
     const { contacts } = this.state
     const newId = contacts[contacts.length-1].id + 1
     this.setState( {newContactId: newId} )
+    await this._fetchItems()
+  }
+
+  async _fetchItems() {
+    this.setState({loadingContacts: true})
+    const contacts = await getAllContacts()
+    this.setState({ contacts, loadingContacts: false})
   }
   onContactLongPress(id) {
     const { selectedContacts } = this.state;
@@ -76,22 +83,25 @@ deleteSelected() {
   }
 
   async addContact() {
+    this.setState({loadingContacts: true})
     const { newContactName, newPhoto, newContactId, contacts, newPhoneNumber } = this.state
     if (newContactName === '' || newPhoto === '' || newPhoneNumber === '') {
       return
     }
-    const newContact = {
+    const newContactObject = {
       id: newContactId,
       name: newContactName,
       thumbnailPhoto: newPhoto,
       phoneNumber: newPhoneNumber
     }
+    const newContact = await saveContact(newContactObject)
     this.setState({
-      contacts: [ ...contacts, newContact ],
+      contacts: [ ...contacts, newContactObject ],
       isAddModalOpen: false,
       newPhoto: '',
       newContactName: '',
-      newPhoneNumber: ''
+      newPhoneNumber: '',
+      loadContact: false
     })
     this.setState({ newContactId: newContactId + 1 })
     const { actionAddContact } = this.props;

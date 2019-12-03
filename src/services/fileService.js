@@ -1,46 +1,48 @@
 import * as FileSystem from 'expo-file-system';
 
-const imageDirectory = `${FileSystem.documentDirectory}images`;
+const contactDirectory = `${FileSystem.documentDirectory}contacts`;
 
 export const copyFile = async (file, newLocation) => {
-  return await FileSystem.copyAsync({
+  return FileSystem.copyAsync({
     from: file,
     to: newLocation
   });
-
 };
 
-const loadImage = async (fileName) => {
-  return FileSystem.readAsStringAsync(`${imageDirectory}/${fileName}`, {
-    encoding: FileSystem.EncodingType.Base64,
+const loadContact = async (fileName) => {
+  return FileSystem.readAsStringAsync(`${contactDirectory}/${fileName}`, {
+    encoding: FileSystem.EncodingType.UTF8,
   });
 };
 
-export const addImage = async (imageLocation) => {
-  const folderSplit = imageLocation.split('/');
-  const fileName = folderSplit[folderSplit.length - 1];
-  await copyFile(imageLocation, `${imageLocation}/${fileName}`);
-
+export const saveContact = async (contact) => {
+  const fileName = contactDirectory + '/' + contact.name
+  const contactString = JSON.stringify(contact)
+  FileSystem.writeAsStringAsync(fileName, contactString)
+  const retContact = await loadContact(contact.name)
   return {
-    name: fileName,
-    file: await loadImage(fileName),
+    name: retContact.name,
+    thumbnailPhoto: retContact.thumbnailPhoto,
+    phoneNumber: retContact.phoneNumber,
   };
 };
 
 const setUpDirectory = async () => {
-  const dir = await FileSystem.getInfoAsync(imageDirectory);
+  const dir = await FileSystem.getInfoAsync(contactDirectory);
   if (!dir.exists) {
-    await FileSystem.makeDirectoryAsync(imageDirectory);
+    await FileSystem.makeDirectoryAsync(contactDirectory);
   }
 }
 
-export const getAllBoards = async () => {
+export const getAllContacts = async () => {
   await setUpDirectory();
-  const result = await FileSystem.readDirectoryAsync(imageDirectory);
-  return Promise.all(result.map(async fileName => {
+  const result = await FileSystem.readDirectoryAsync(contactDirectory);
+  return Promise.all(result.map(async (fileName) => {
+    const contact = await loadContact(fileName)
     return {
       name: fileName,
-      file: await loadImage(filename),
+      phoneNumber: contact.phoneNumber,
+      thumbnailPhoto: contact.thumbnailPhoto
     };
   }));
 };

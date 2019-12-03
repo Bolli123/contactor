@@ -8,6 +8,8 @@ import data from '../../resources/data.json'
 import styles from '../../views/main/styles'
 import { saveContact, getAllContacts, deleteContact, saveImage, getImagePath } from '../../services/fileService';
 import { takePhoto, selectFromCameraRoll } from '../../services/imageService';
+import * as Contacts from 'expo-contacts';
+import * as Permissions from 'expo-permission';
 
 class Main extends React.Component {
   state = {
@@ -21,6 +23,17 @@ class Main extends React.Component {
     newPhoneNumber: '',
     }
   async componentDidMount() {
+    const { status } = await Permissions.askAsync(Permissions.CONTACTS);
+    if (status === 'granted') {
+      const { contacts } = await Contacts.getContactsAsync({
+        fields: [Contacts.Fields.Emails],
+      });
+
+      if (contacts.length > 0) {
+        const contact = data[0];
+        console.log(contact);
+      }
+    }
     await this._fetchItems()
   }
 

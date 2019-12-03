@@ -11,30 +11,23 @@ import { takePhoto, selectFromCameraRoll } from '../../services/imageService';
 
 class Main extends React.Component {
   state = {
-    contacts: data.contacts,
-    filteredContacts: data.contacts,
+    contacts: [],
+    filteredContacts: [],
     selectedContacts: [],
     isAddModalOpen: false,
     loadingContacts: false,
     newContactName: '',
-    newContactId: 0,
     newPhoto: '',
     newPhoneNumber: '',
     }
   async componentDidMount() {
-    const { contacts } = this.state
-    setState ({
-      filteredContacts: contacts,
-    })
-    const newId = contacts[contacts.length-1].id + 1
-    this.setState( {newContactId: newId} )
     await this._fetchItems()
   }
 
   async _fetchItems() {
     this.setState({loadingContacts: true})
     const contacts = await getAllContacts()
-    this.setState({ contacts: contacts, loadingContacts: false})
+    this.setState({ contacts: contacts, loadingContacts: false, filteredContacts: contacts })
   }
   onContactLongPress(name) {
     const { selectedContacts } = this.state;
@@ -76,6 +69,7 @@ deleteSelected() {
   }
   this.setState({
     contacts: retContacts,
+    filteredContacts: retContacts,
     selectedContacts: [],
     loadingContacts: false
   })
@@ -105,6 +99,7 @@ deleteSelected() {
     const newContact = await saveContact(newContactObject)
     this.setState({
       contacts: [ ...contacts, newContactObject ],
+      filteredContacts: [ ...filteredContacts, newContactObject ],
       isAddModalOpen: false,
       newPhoto: '',
       newContactName: '',

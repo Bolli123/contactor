@@ -9,7 +9,7 @@ const ContactList = ({
   <View style={{ flex: 1 }}>
     <FlatList
       numColumns={1}
-      data={contacts}
+      data={contacts.sort((a, b) => a.name.localeCompare(b.name))}
       extraData={selectedContacts}
       renderItem={({ item: { name, thumbnailPhoto, id } }) => {
         return (

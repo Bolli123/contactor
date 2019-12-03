@@ -2,8 +2,7 @@ import { StyleSheet } from 'react-native';
 
 export default StyleSheet.create({
   right: {
-    fontSize: 20,
-    fontWeight: 'bold',
+    fontSize: 15,
   },
   icon: {
     fontSize: 20,
@@ -14,6 +13,6 @@ export default StyleSheet.create({
     flex: 1,
     flexDirection: 'row',
     marginRight: 20,
-    alignItems: 'center'
+    alignItems: 'center',
   }
 })

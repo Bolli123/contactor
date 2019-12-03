@@ -1,5 +1,6 @@
 import React from 'react';
-import { View, Text } from 'react-native';
+import { View, Text, Button } from 'react-native';
+import call from 'react-native-phone-call';
 import { SearchBar } from 'react-native-elements';
 import Toolbar from '../../components/Toolbar';
 import ContactList from '../../components/contactlist';
@@ -143,6 +144,14 @@ deleteSelected() {
     });
   };
 
+  call = () => {
+    const contactNumber = {
+      number: '8970038',
+      prompt: false
+    }
+    call(contactNumber).catch(console.error);
+  }
+
   render() {
     const { selectedContacts, filteredContacts, isAddModalOpen, value } = this.state;
     return (
@@ -154,6 +163,10 @@ deleteSelected() {
           onChangeText={text => this.searchFilterFunction(text)}
           autoCorrect={false}
           value={this.state.value}
+        />
+        <Button
+        title="Call"
+        onPress={this.call}
         />
         <Toolbar
           hasSelectedContacts={selectedContacts.length > 0}

@@ -4,6 +4,9 @@ export default StyleSheet.create({
   image: {
     width: 115,
     height: 115,
+    borderRadius: 115 / 2,
+    overflow: 'hidden',
+    borderWidth: 3,
   },
   content: {
     flex: 3,

@@ -7,7 +7,7 @@ import { Entypo } from '@expo/vector-icons';
 
 class Details extends React.Component {
   state = {
-    thumbnailPhoto: '',
+    thumbnailPhoto: null,
     name: '',
     phoneNumber: '',
     isAddModalOpen: false,
@@ -39,7 +39,7 @@ class Details extends React.Component {
     return (
       <View style={{ flex: 1}}>
         <Toolbar
-          hasSelectedContacts={0}
+          hasSelectedContacts={true}
           onAdd={() => this.setState({ isAddModalOpen: true})}
           onRemove={() => this.deleteSelected()}
           pagename ={'details'}

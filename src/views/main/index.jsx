@@ -1,40 +1,41 @@
 import React from 'react';
 import { View, Text } from 'react-native';
 import Toolbar from '../../components/Toolbar';
-import BoardList from '../../components/boardlist';
+import ContactList from '../../components/contactlist';
 import AddModal from '../../components/AddModal';
 import styles from '../../views/main/styles'
-import { addImage, getAllBoards } from '../../services/fileService';
+import { addImage, getAllImages } from '../../services/fileService';
 import { takePhoto, selectFromCameraRoll } from '../../services/imageService';
 import { connect } from 'react-redux'
-import { actionAddBoard, actionDeleteBoards } from '../../actions/boardActions'
+import { actionAddContact, actionDeleteContacts } from '../../actions/contactActions'
 
 class Main extends React.Component {
   state = {
-    boards: this.props.boards,
-    selectedBoards: [],
+    contacts: this.props.contacts,
+    selectedContacts: [],
     isAddModalOpen: false,
-    loadingBoards: false,
-    boardName: '',
-    newBoardId: 0,
-    newPhoto: ''
+    loadingContacts: false,
+    newContactName: '',
+    newContactId: 0,
+    newPhoto: '',
+    newPhoneNumber: ''
   }
   async componentDidMount() {
-    const { boards } = this.state
-    const newId = boards[boards.length-1].id + 1
-    this.setState( {newBoardId: newId} )
+    const { contacts } = this.state
+    const newId = contacts[contacts.length-1].id + 1
+    this.setState( {newContactId: newId} )
   }
-  onBoardLongPress(id) {
-    const { selectedBoards } = this.state;
-    if (selectedBoards.indexOf(id) !== -1) {
-      // board is already in the list
+  onContactLongPress(id) {
+    const { selectedContacts } = this.state;
+    if (selectedContacts.indexOf(id) !== -1) {
+      // contact is already in the list
       this.setState({
-        selectedBoards: selectedBoards.filter(board => board !== id)
+        selectedContacts: selectedContacts.filter(contact => contact !== id)
       });
     } else {
-      //add board
+      //add contact
       this.setState({
-        selectedBoards: [ ...selectedBoards, id ]
+        selectedContacts: [ ...selectedContacts, id ]
       });
     }
   }
@@ -51,70 +52,77 @@ class Main extends React.Component {
     }
 }
 deleteSelected() {
-  const { selectedBoards, boards} = this.state
-  const retBoards = []
-  for (const [index, value] of boards.entries()) {
-  if (!selectedBoards.includes(value.id)) {
-      retBoards.push(value)
+  const { selectedContacts, contacts} = this.state
+  const retContacts = []
+  for (const [index, value] of contacts.entries()) {
+  if (!selectedContacts.includes(value.id)) {
+      retContacts.push(value)
     }
   }
   this.setState({
-    boards: retBoards,
-    selectedBoards: []
+    contacts: retContacts,
+    selectedContacts: []
   })
-  const { actionDeleteBoards } = this.props;
-  actionDeleteBoards(retBoards)
-}
-  setBoardName(name) {
-      this.setState({boardName: name})
+  const { actionDeleteContacts } = this.props;
+  actionDeleteContacts(retContacts)
   }
 
-  async addBoard(image, name) {
-    const { boardName, newPhoto, newBoardId, boards } = this.state
-    if (boardName === '' || newPhoto === '') {
+  setContactName(name) {
+      this.setState({newContactName: name})
+  }
+
+  setContactPhoneNumber(phoneNumber) {
+    this.setState({newPhoneNumber: phoneNumber})
+  }
+
+  async addContact() {
+    const { newContactName, newPhoto, newContactId, contacts, newPhoneNumber } = this.state
+    if (newContactName === '' || newPhoto === '' || newPhoneNumber === '') {
       return
     }
-    const newBoard = {
-      id: newBoardId,
-      name: boardName,
-      thumbnailPhoto: newPhoto
+    const newContact = {
+      id: newContactId,
+      name: newContactName,
+      thumbnailPhoto: newPhoto,
+      phoneNumber: newPhoneNumber
     }
     this.setState({
-      boards: [ ...boards, newBoard ],
+      contacts: [ ...contacts, newContact ],
       isAddModalOpen: false,
       newPhoto: '',
-      boardName: ''
+      newContactName: '',
+      newPhoneNumber: ''
     })
-    this.setState({ newBoardId: newBoardId + 1 })
-    const { actionAddBoard } = this.props;
-    actionAddBoard(newBoardId, boardName, newPhoto)
+    this.setState({ newContactId: newContactId + 1 })
+    const { actionAddContact } = this.props;
+    actionAddContact(newContactId, newContactName, newPhoneNumber, newPhoto)
   }
 
   displayCaption() {
-    const { selectedBoards } = this.state;
-    if (selectedBoards.length == 0) {
+    const { selectedContacts } = this.state;
+    if (selectedContacts.length == 0) {
       return;
     }
-    let itemCaption = 'boards';
-    if (selectedBoards.length === 1) {
-      itemCaption = 'board'
+    let itemCaption = 'contacts';
+    if (selectedContacts.length === 1) {
+      itemCaption = 'contact'
     }
-    return <Text style={styles.selectedText}> {selectedBoards.length} {itemCaption} selected </Text>
+    return <Text style={styles.selectedText}> {selectedContacts.length} {itemCaption} selected </Text>
   }
   render() {
-    const { selectedBoards, boards, isAddModalOpen, boardName } = this.state;
+    const { selectedContacts, contacts, isAddModalOpen } = this.state;
     return (
       <View style={{ flex: 1}}>
         <Toolbar
-          hasSelectedImages={selectedBoards.length > 0}
+          hasSelectedContacts={selectedContacts.length > 0}
           onAdd={() => this.setState({ isAddModalOpen: true})}
           onRemove={() => this.deleteSelected()}
-          pagename ={'Boards'}
+          pagename ={'Contacts'}
         />
-        <BoardList
-          onLongPress={(id) => this.onBoardLongPress(id)}
-          boards={ boards }
-          selectedBoards={selectedBoards}/>
+        <ContactList
+          onLongPress={(id) => this.onContactLongPress(id)}
+          contacts={ contacts }
+          selectedContacts={selectedContacts}/>
           <View style={styles.block_counter}>
           {this.displayCaption()}
           </View>
@@ -123,12 +131,13 @@ deleteSelected() {
           closeModal={() => this.setState({
             isAddModalOpen: false ,
             newPhoto: '',
-            boardName: ''
+            newContactName: ''
           })}
           takePhoto={() => this.takePhoto()}
           selectFromCameraRoll={() => this.selectFromCameraRoll()}
-          addBoard={() => this.addBoard()}
-          boardName={(name) => this.setBoardName(name)}
+          addContact={() => this.addContact()}
+          contactName={(name) => this.setContactName(name)}
+          contactNumber={(number) => this.setContactPhoneNumber(number)}
          />
       </View>
     )
@@ -136,7 +145,7 @@ deleteSelected() {
 }
 
 const mapStateToProps = reduxStoreState => {
-  return {boards: reduxStoreState.board}
+  return {contacts: reduxStoreState.contact}
 }
 
-export default connect(mapStateToProps, { actionAddBoard, actionDeleteBoards })(Main); // Returns a connected component
+export default connect(mapStateToProps, { actionAddContact, actionDeleteContacts })(Main); // Returns a connected component

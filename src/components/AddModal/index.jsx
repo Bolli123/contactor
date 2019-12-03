@@ -7,15 +7,19 @@ import Modal from '../Modal';
 import styles from './styles';
 
 const AddModal = ({
-  isOpen, closeModal, takePhoto, selectFromCameraRoll, addBoard, boardName
+  isOpen, closeModal, takePhoto, selectFromCameraRoll, addContact, contactName, contactNumber
 }) => (
   <Modal
     isOpen={isOpen}
     closeModal={closeModal}
   >
     <TextInput
-      userInput={boardName}
-      placeholder="Board Name..."
+      userInput={contactName}
+      placeholder="Contact Name..."
+    />
+    <TextInput
+      userInput={contactNumber}
+      placeholder="Contact Number..."
     />
     <View style={styles.iconContainer}>
       <TouchableOpacity onPress={takePhoto}>
@@ -32,8 +36,8 @@ const AddModal = ({
       </TouchableOpacity>
     </View>
     <Button
-      title="Add Board"
-      onPress={() => addBoard()}
+      title="Add Contact"
+      onPress={() => addContact()}
     />
   </Modal>
 );
@@ -43,7 +47,8 @@ AddModal.propTypes = {
   closeModal: PropTypes.func.isRequired,
   takePhoto: PropTypes.func.isRequired,
   selectFromCameraRoll: PropTypes.func.isRequired,
-  addBoard: PropTypes.func.isRequired,
-  boardName: PropTypes.func.isRequired
+  addContact: PropTypes.func.isRequired,
+  contactName: PropTypes.func.isRequired,
+  contactNumber: PropTypes.func.isRequired
 }
 export default AddModal;

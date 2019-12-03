@@ -1,10 +1,6 @@
 import { combineReducers } from 'redux';
-import board from './boardReducer'
-import list from './listReducer'
-import task from './taskReducer'
+import contact from './contactReducer'
 
 export default combineReducers({
-  board,
-  list,
-  task
+  contact,
 });

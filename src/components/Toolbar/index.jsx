@@ -3,17 +3,21 @@ import PropTypes from 'prop-types';
 import { View, TouchableHighlight, Text} from 'react-native';
 import styles from './styles'
 
-const Toolbar = ({ onAdd, onRemove, hasSelectedImages, pagename }) => (
+const Toolbar = ({
+  onAdd, onRemove, hasSelectedContacts, pagename
+}) => (
   <View styleName="horizontal" style={styles.toolbar}>
     <TouchableHighlight onPress={onAdd} style={styles.button}>
-      <Text style={styles.buttonText}> Add {pagename} </Text>
+      <Text style={styles.buttonText}>
+        Add {pagename}
+      </Text>
     </TouchableHighlight>
     <TouchableHighlight
       onPress={onRemove}
       style={styles.button}
-      disabled={!hasSelectedImages}
+      disabled={!hasSelectedContacts}
     >
-      <Text style={[styles.buttonText, hasSelectedImages ? {} : { color: 'rgba(155, 155, 155, 0.5)' }]}> Delete Selected</Text>
+      <Text style={[styles.buttonText, hasSelectedContacts ? {} : { color: 'rgba(155, 155, 155, 0.5)' }]}> Delete Selected</Text>
     </TouchableHighlight>
   </View>
 )
@@ -21,7 +25,8 @@ const Toolbar = ({ onAdd, onRemove, hasSelectedImages, pagename }) => (
 Toolbar.propTypes = {
   onAdd: PropTypes.func.isRequired,
   onRemove: PropTypes.func.isRequired,
-  hasSelectedImages: PropTypes.bool.isRequired
+  hasSelectedContacts: PropTypes.bool.isRequired,
+  pagename: PropTypes.string.isRequired
 }
 
 export default Toolbar;

@@ -1,1 +1,1 @@
-export const fadedPurple = '#E1B5FF';
+export const fadedPurple = '#6ea6ff';

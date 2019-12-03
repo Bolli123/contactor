@@ -1,2 +1,0 @@
-export const ADD_CONTACT = 'ADD_CONTACT';
-export const DELETE_CONTACTS = 'DELETE_CONTACTS';

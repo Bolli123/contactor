@@ -5,7 +5,7 @@ import ContactList from '../../components/contactlist';
 import AddModal from '../../components/AddModal';
 import data from '../../resources/data.json'
 import styles from '../../views/main/styles'
-import { saveContact, getAllContacts, deleteContact, saveImage } from '../../services/fileService';
+import { saveContact, getAllContacts, deleteContact, saveImage, getImagePath } from '../../services/fileService';
 import { takePhoto, selectFromCameraRoll } from '../../services/imageService';
 
 class Main extends React.Component {
@@ -29,7 +29,6 @@ class Main extends React.Component {
   async _fetchItems() {
     this.setState({loadingContacts: true})
     const contacts = await getAllContacts()
-    console.log(contacts)
     this.setState({ contacts: contacts, loadingContacts: false})
   }
   onContactLongPress(name) {
@@ -87,17 +86,17 @@ deleteSelected() {
 
   async addContact() {
     this.setState({loadingContacts: true})
-    const { newContactName, newPhoto, newContactId, contacts, newPhoneNumber } = this.state
+    const { newContactName, newPhoto, contacts, newPhoneNumber } = this.state
     if (newContactName === '' || newPhoto === '' || newPhoneNumber === '') {
       return
     }
+    await saveImage(newPhoto, newContactName)
+    const photo = getImagePath(newContactName)
     const newContactObject = {
-      id: newContactId,
       name: newContactName,
       phoneNumber: newPhoneNumber,
-      thumbnailPhoto: newPhoto
+      thumbnailPhoto: photo
     }
-    const photo = await saveImage(newPhoto)
     const newContact = await saveContact(newContactObject)
     this.setState({
       contacts: [ ...contacts, newContactObject ],
@@ -107,7 +106,6 @@ deleteSelected() {
       newPhoneNumber: '',
       loadContact: false
     })
-    this.setState({ newContactId: newContactId + 1 })
   }
 
   displayCaption() {

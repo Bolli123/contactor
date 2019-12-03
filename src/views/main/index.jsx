@@ -5,7 +5,7 @@ import ContactList from '../../components/contactlist';
 import AddModal from '../../components/AddModal';
 import data from '../../resources/data.json'
 import styles from '../../views/main/styles'
-import { saveContact, getAllContacts } from '../../services/fileService';
+import { saveContact, getAllContacts, deleteContact, saveImage } from '../../services/fileService';
 import { takePhoto, selectFromCameraRoll } from '../../services/imageService';
 
 class Main extends React.Component {
@@ -59,16 +59,21 @@ class Main extends React.Component {
     }
 }
 deleteSelected() {
-  const { selectedContacts, contacts} = this.state
+  this.setState({loadingContacts: true})
+  const { selectedContacts, contacts } = this.state
   const retContacts = []
   for (const [index, value] of contacts.entries()) {
-  if (!selectedContacts.includes(value.id)) {
-      retContacts.push(value)
+    if (!selectedContacts.includes(value.name)) {
+        retContacts.push(value)
+      }
+    else {
+      deleteContact(value.name)
     }
   }
   this.setState({
     contacts: retContacts,
-    selectedContacts: []
+    selectedContacts: [],
+    loadingContacts: false
   })
   }
 
@@ -89,9 +94,10 @@ deleteSelected() {
     const newContactObject = {
       id: newContactId,
       name: newContactName,
-      thumbnailPhoto: newPhoto,
-      phoneNumber: newPhoneNumber
+      phoneNumber: newPhoneNumber,
+      thumbnailPhoto: newPhoto
     }
+    const photo = await saveImage(newPhoto)
     const newContact = await saveContact(newContactObject)
     this.setState({
       contacts: [ ...contacts, newContactObject ],

@@ -179,8 +179,8 @@ deleteSelected() {
           takePhoto={() => this.takePhoto()}
           selectFromCameraRoll={() => this.selectFromCameraRoll()}
           addContact={() => this.addContact()}
-          contactName={(name) => this.setContactName(name)}
-          contactNumber={(number) => this.setContactPhoneNumber(number)}
+          newContactName={(name) => this.setContactName(name)}
+          newContactNumber={(number) => this.setContactPhoneNumber(number)}
          />
       </View>
     )

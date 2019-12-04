@@ -5,13 +5,16 @@ import Toolbar from '../../components/Toolbar';
 import AddModal from '../../components/AddModal';
 import styles from '../../views/details/styles';
 import { Entypo } from '@expo/vector-icons';
+import EditButton from '../../components/editbutton';
+
 
 class Details extends React.Component {
   state = {
     thumbnailPhoto: null,
     name: '',
     phoneNumber: '',
-    isAddModalOpen: false,
+    editModalOpen: false,
+
   }
   async componentDidMount() {
     const { navigation } = this.props
@@ -21,18 +24,13 @@ class Details extends React.Component {
     this.setState({thumbnailPhoto: thumbnailPhoto})
     this.setState({name: name})
     this.setState({phoneNumber: phoneNumber})
+    this.props.navigation.setParams({ toggleModal: this._toggleModal });
   }
 
-
-  displayCaption() {
-    const { selectedLists } = this.state;
-    if (selectedLists.length == 0) { return; }
-
-    let itemCaption = 'lists';
-    if (selectedLists.length === 1) {
-      itemCaption = 'list'
-    }
-    return <Text style={styles.selectedText}> {selectedLists.length} {itemCaption} selected </Text>
+  _toggleModal = () => {
+    const { editModalOpen } = this.state
+    console.log(editModalOpen)
+    this.setState({ editModalOpen: !editModalOpen})
   }
 
   call = () => {
@@ -43,17 +41,20 @@ class Details extends React.Component {
     }
     call(contactNumber).catch(console.error);
   }
-
+  static navigationOptions = ({ navigation }) => {
+    return {
+      headerTitle: 'Details',
+      headerRight: () => (
+        <EditButton
+          onPress={navigation.getParam('toggleModal')}
+        />
+      ),
+    };
+  };
   render() {
-    const { thumbnailPhoto, name, phoneNumber, isAddModalOpen } = this.state;
+    const { thumbnailPhoto, name, phoneNumber, editModalOpen } = this.state;
     return (
       <View style={{ flex: 1}}>
-        <Toolbar
-          hasSelectedContacts={true}
-          onAdd={() => this.setState({ isAddModalOpen: true})}
-          onRemove={() => this.deleteSelected()}
-          pagename ={'details'}
-        />
         <View style={styles.container}>
           <Image
             style={styles.image}
@@ -67,21 +68,24 @@ class Details extends React.Component {
             name="phone"
             />
             <Text style={styles.phoneNumber}>
-            {phoneNumber}</Text>
+              {phoneNumber}
+            </Text>
           </TouchableOpacity>
         </View>
         <AddModal
-          isOpen={isAddModalOpen}
+          isOpen={editModalOpen}
           closeModal={() => this.setState({
-            isAddModalOpen: false ,
+            editModalOpen: false ,
             newPhoto: '',
             newContactName: ''
           })}
           takePhoto={() => this.takePhoto()}
           selectFromCameraRoll={() => this.selectFromCameraRoll()}
           addContact={() => this.addContact()}
-          contactName={(name) => this.setContactName(name)}
-          contactNumber={(number) => this.setContactPhoneNumber(number)}
+          newContactName={(name) => this.setContactName(name)}
+          newContactNumber={(number) => this.setContactPhoneNumber(number)}
+          contactName={name}
+          contactNumber={phoneNumber}
          />
       </View>
     )

@@ -7,21 +7,19 @@ import Modal from '../Modal';
 import styles from './styles';
 
 const AddModal = ({
-  isOpen, closeModal, takePhoto, selectFromCameraRoll, addContact, newContactName, newContactNumber, contactName, contactNumber
+  isOpen, closeModal, takePhoto, selectFromCameraRoll, addContact, contactName, contactNumber
 }) => (
   <Modal
     isOpen={isOpen}
     closeModal={closeModal}
   >
     <TextInput
-      userInput={newContactName}
+      userInput={contactName}
       placeholder="Contact Name..."
-      defaultValue={contactName}
     />
     <TextInput
-      userInput={newContactNumber}
+      userInput={contactNumber}
       placeholder="Contact Number..."
-      defaultValue={contactNumber}
     />
     <View style={styles.iconContainer}>
       <TouchableOpacity onPress={takePhoto}>
@@ -50,14 +48,7 @@ AddModal.propTypes = {
   takePhoto: PropTypes.func.isRequired,
   selectFromCameraRoll: PropTypes.func.isRequired,
   addContact: PropTypes.func.isRequired,
-  newContactName: PropTypes.func.isRequired,
-  newContactNumber: PropTypes.func.isRequired,
-  contactName: PropTypes.string,
-  contactNumber: PropTypes.string
-}
-
-AddModal.defaultProps = {
-  contactName: '',
-  contactNumber: ''
+  contactName: PropTypes.func.isRequired,
+  contactNumber: PropTypes.func.isRequired
 }
 export default AddModal;

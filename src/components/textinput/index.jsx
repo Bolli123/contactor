@@ -5,6 +5,7 @@ export default class InputComponent extends Component {
   constructor(props) {
     super(props);
     this.state = { text: '' };
+    this.setState({ text: props.defaultValue })
   }
 
   onChange(text) {

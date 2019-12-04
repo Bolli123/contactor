@@ -4,18 +4,10 @@ import { createAppContainer } from 'react-navigation';
 import { createStackNavigator } from 'react-navigation-stack';
 import Main from '../views/main';
 import Details from '../views/details';
-import EditButton from '../components/editbutton';
-
 
 const StackNavigator = createStackNavigator({
   Main,
-  Details: {
-    screen: Details,
-    navigationOptions: {
-      title: 'Details',
-      headerRight:( <EditButton /> )
-    },
-  },
+  Details
 });
 
 export default createAppContainer(StackNavigator);

@@ -34,6 +34,12 @@ export const saveContact = async (contact) => {
   };
 };
 
+export const editContact = async (oldName, newContactInfo) => {
+  const fileName = `${contactDirectory}/${oldName}`
+  const newContactInfoString = JSON.stringify(newContactInfo)
+  FileSystem.writeAsStringAsync(fileName, newContactInfoString)
+}
+
 export const getImagePath = (fileName) => {
   return `${imageDirectory}/${fileName}`
 }

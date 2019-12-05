@@ -6,7 +6,7 @@ import AddModal from '../../components/AddModal';
 import styles from '../../views/details/styles';
 import { Entypo } from '@expo/vector-icons';
 import EditButton from '../../components/editbutton';
-import { editContact } from '../../services/fileService'
+import { editContact, saveImage } from '../../services/fileService'
 import { takePhoto, selectFromCameraRoll } from '../../services/imageService'
 
 
@@ -35,7 +35,7 @@ class Details extends React.Component {
       newPhoto: thumbnailPhoto
     })
     this.props.navigation.setParams({ toggleModal: this._toggleModal });
-  }
+    }
 
   setContactName(name) {
       this.setState({newContactName: name})
@@ -46,11 +46,8 @@ class Details extends React.Component {
   }
 
   editContact() {
-    const { name, newContactName, newPhoneNumber, newPhoto } = this.state
-    console.log(newContactName)
-    console.log(newPhoneNumber)
-    console.log(newPhoto)
-    if (newContactName !== '' || newPhoneNumber !== '' || newPhoto !== '') {
+    const { name, newContactName, newPhoneNumber, newPhoto, thumbnailPhoto } = this.state
+    if (newContactName === '' || newPhoneNumber === '' || newPhoto === '') {
       return
     }
     const newContact = {
@@ -59,6 +56,9 @@ class Details extends React.Component {
       thumbnailPhoto: newPhoto
     }
     editContact(name, newContact)
+    if (thumbnailPhoto !== newPhoto) {
+      saveImage(newPhoto, newContactName)
+    }
     this.setState({
       name: newContactName,
       phoneNumber: newPhoneNumber,
@@ -83,7 +83,6 @@ class Details extends React.Component {
 
   _toggleModal = () => {
     const { editModalOpen } = this.state
-    console.log(editModalOpen)
     this.setState({ editModalOpen: !editModalOpen})
   }
 

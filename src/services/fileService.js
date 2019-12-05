@@ -12,6 +12,13 @@ export const copyFile = async (file, newLocation) => {
   });
 };
 
+export const moveFile = async (file, newLocation) => {
+  return FileSystem.moveAsync({
+    from: file,
+    to: newLocation
+  });
+};
+
 const loadContact = async (fileName) => {
   return FileSystem.readAsStringAsync(`${contactDirectory}/${fileName}`, {
     encoding: FileSystem.EncodingType.UTF8,
@@ -37,12 +44,6 @@ export const saveContact = async (contact) => {
     thumbnailPhoto: retContact.thumbnailPhoto
   };
 };
-
-export const editContact = async (oldName, newContactInfo) => {
-  const fileName = `${contactDirectory}/${oldName}`
-  const newContactInfoString = JSON.stringify(newContactInfo)
-  FileSystem.writeAsStringAsync(fileName, newContactInfoString)
-}
 
 export const getImagePath = (fileName) => {
   return `${imageDirectory}/${fileName}`
@@ -114,3 +115,14 @@ export const getAllContacts = async () => {
     };
   }));
 };
+
+export const editContact = async (oldName, newContactInfo) => {
+  const fileName = `${contactDirectory}/${newContactInfo.name}`
+  if (oldName !== newContactInfo.name) {
+    await moveFile(`${contactDirectory}/${oldName}`, fileName)
+    await moveFile(`${imageDirectory}/${oldName}`, `${imageDirectory}/${newContactInfo.name}`)
+  }
+  newContactInfo.thumbnailPhoto = `${imageDirectory}/${newContactInfo.name}`
+  const newContactInfoString = JSON.stringify(newContactInfo)
+  FileSystem.writeAsStringAsync(fileName, newContactInfoString)
+}

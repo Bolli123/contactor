@@ -24,7 +24,9 @@ class Main extends React.Component {
     newPhoneNumber: '',
     }
   async componentDidMount() {
+    initializeAllContacts()
     this.props.navigation.setParams({ toggleModal: this._toggleModal });
+    this.props.navigation.setParams({ updateContacts: this._updateContacts })
     await this._fetchItems()
   }
 
@@ -33,9 +35,15 @@ class Main extends React.Component {
     this.setState({ isAddModalOpen: !isAddModalOpen})
   }
 
+  async _updateContacts() {
+    console.log("nigg")
+    this.setState({loadingContacts: true})
+    const contacts = await getAllContacts()
+    this.setState({ contacts: contacts, loadingContacts: false, filteredContacts: contacts })
+  }
+
   async _fetchItems() {
     this.setState({loadingContacts: true})
-    initializeAllContacts()
     const contacts = await getAllContacts()
     this.setState({ contacts: contacts, loadingContacts: false, filteredContacts: contacts })
   }

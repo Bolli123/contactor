@@ -5,9 +5,9 @@ export default StyleSheet.create({
   },
   block_counter: {
     position: 'absolute',
-    width: '100%',
-    height: 30,
-    margin: 5,
     bottom: 0,
+    alignItems: 'flex-end',
+    justifyContent: 'center',
+    width: '100%',
   },
 })

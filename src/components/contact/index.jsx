@@ -3,7 +3,7 @@ import { Image, View, Text, TouchableOpacity} from 'react-native';
 import { withNavigation } from 'react-navigation';
 import PropTypes from 'prop-types';
 import styles from './styles'
-import { AntDesign } from '@expo/vector-icons';
+import { Entypo } from '@expo/vector-icons';
 
 const Contact = ({
   name, thumbnailPhoto, phoneNumber, onLongPress, isSelected, navigation: { navigate }
@@ -16,7 +16,7 @@ const Contact = ({
     {
       isSelected
         ?
-          <AntDesign name="checkcircleo" style={ styles.checkmark } />
+          <Entypo name="check" style={ styles.checkmark } />
         :
         <>
         </>

@@ -16,7 +16,6 @@ export default StyleSheet.create({
     margin: 15,
     borderRadius: 200 / 2,
     overflow: 'hidden',
-    borderWidth: 3,
   },
   container: {
     flex: 1,

@@ -138,6 +138,7 @@ deleteSelected() {
     });
   };
 
+
   render() {
     const { selectedContacts, filteredContacts, isAddModalOpen, value } = this.state;
     return (

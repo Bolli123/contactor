@@ -21,7 +21,7 @@ export const initializeAllContacts = async () => {
       }
       const contact = {
         name: data[i].firstName,
-        phoneNumber: data[i].phoneNumbers[0].digits,
+        phoneNumber: data[i].phoneNumbers[0].number,
         thumbnailPhoto: photo,
       }
       console.log(data[i].phoneNumbers)

@@ -5,10 +5,7 @@ const contactDirectory = `${FileSystem.documentDirectory}contacts`;
 const imageDirectory = `${FileSystem.documentDirectory}images`;
 
 export const regexName = async (fileName) => {
-  // const replaceLetters = fileName.allReplace({'ó': 'o', 'Ó': 'O', 'í': })
-  console.log(fileName)
   const outString = iceChars.replaceIcelandicCharacters(fileName)
-  console.log(outString)
   return outString;
 }
 

@@ -25,13 +25,13 @@ const AddModal = ({
         defaultValue={contactNumber}
       />
       <View style={styles.iconContainer}>
-        <TouchableOpacity onPress={takePhoto}>
+        <TouchableOpacity style={styles.iconButton} onPress={takePhoto}>
           <Entypo
             style={styles.icon}
             name="camera"
           />
         </TouchableOpacity>
-        <TouchableOpacity onPress={selectFromCameraRoll}>
+        <TouchableOpacity style={styles.iconButton} onPress={selectFromCameraRoll}>
           <Entypo
             style={styles.icon}
             name="image"

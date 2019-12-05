@@ -19,12 +19,16 @@ export default StyleSheet.create({
     position: 'absolute',
     top: 15,
     right: 15,
-    fontSize: 16,
+    fontSize: 25,
+    color: '#51CE3D'
   },
   contactContainer: {
     flex: 1,
     flexDirection: 'row',
-    margin: 10,
+    padding: 10,
     alignContent: 'stretch',
+    borderBottomColor: '#e9e9e9',
+    borderBottomWidth: 2,
+    margin: 10
   },
 });

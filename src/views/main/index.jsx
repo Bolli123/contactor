@@ -4,6 +4,8 @@ import { SearchBar } from 'react-native-elements';
 import Toolbar from '../../components/Toolbar';
 import ContactList from '../../components/contactlist';
 import AddModal from '../../components/AddModal';
+import AddButton from '../../components/addbutton'
+import DeleteButton from '../../components/deletebutton'
 import data from '../../resources/data.json'
 import styles from '../../views/main/styles'
 import { saveContact, getAllContacts, deleteContact, saveImage, getImagePath } from '../../services/fileService';
@@ -22,7 +24,13 @@ class Main extends React.Component {
     newPhoneNumber: '',
     }
   async componentDidMount() {
+    this.props.navigation.setParams({ toggleModal: this._toggleModal });
     await this._fetchItems()
+  }
+
+  _toggleModal = () => {
+    const { isAddModalOpen } = this.state
+    this.setState({ isAddModalOpen: !isAddModalOpen})
   }
 
   async _fetchItems() {
@@ -114,12 +122,9 @@ deleteSelected() {
     const { selectedContacts } = this.state;
     if (selectedContacts.length == 0) {
       return;
+    } else {
+      return <DeleteButton selected={selectedContacts.length} onDelete={() => this.deleteSelected()}/>
     }
-    let itemCaption = 'contacts';
-    if (selectedContacts.length === 1) {
-      itemCaption = 'contact'
-    }
-    return <Text style={styles.selectedText}> {selectedContacts.length} {itemCaption} selected </Text>
   }
 
   searchFilterFunction = text => {
@@ -138,6 +143,21 @@ deleteSelected() {
     });
   };
 
+  static navigationOptions = ({ navigation }) => {
+    return {
+      headerStyle: {
+        backgroundColor: '#6ea6ff'
+      },
+      headerTintColor: '#fff',
+      headerTitle: 'Contacts',
+      headerRight: () => (
+        <AddButton
+          onAdd={navigation.getParam('toggleModal')}
+        />
+      ),
+    }
+  }
+
 
   render() {
     const { selectedContacts, filteredContacts, isAddModalOpen, value } = this.state;
@@ -150,12 +170,6 @@ deleteSelected() {
           onChangeText={text => this.searchFilterFunction(text)}
           autoCorrect={false}
           value={this.state.value}
-        />
-        <Toolbar
-          hasSelectedContacts={selectedContacts.length > 0}
-          onAdd={() => this.setState({ isAddModalOpen: true})}
-          onRemove={() => this.deleteSelected()}
-          pagename ={'Contacts'}
         />
         <ContactList
           onLongPress={(name) => this.onContactLongPress(name)}

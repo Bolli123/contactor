@@ -1,6 +1,7 @@
 import * as Permissions from 'expo-permissions';
 import * as Contacts from 'expo-contacts';
 import * as FileSystem from 'expo-file-system';
+import { saveContact } from './fileService';
 
 const contactDirectory = `${FileSystem.documentDirectory}contacts`;
 
@@ -24,9 +25,7 @@ export const initializeAllContacts = async () => {
         phoneNumber: data[i].phoneNumbers[0].number,
         thumbnailPhoto: photo,
       }
-      console.log(data[i].phoneNumbers)
-      const contactString = JSON.stringify(contact)
-      FileSystem.writeAsStringAsync(fileName, contactString)
+      const lol = await saveContact(contact)
     }
   }
 }

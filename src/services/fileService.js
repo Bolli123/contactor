@@ -3,6 +3,13 @@ import * as FileSystem from 'expo-file-system';
 const contactDirectory = `${FileSystem.documentDirectory}contacts`;
 const imageDirectory = `${FileSystem.documentDirectory}images`;
 
+export const regexName = async (fileName) => {
+  console.log(fileName)
+  const outString = fileName.replace(/[áéíóúýÁÉÍÓÚÝþðæÐÞÆöÖ`~!@#$%^&*()_|+\-=?;:'",.<>\{\}\[\]\\\/]/gi, '');
+  console.log(outString)
+  return outString;
+}
+
 export const copyFile = async (file, newLocation) => {
   return FileSystem.copyAsync({
     from: file,
@@ -18,24 +25,25 @@ export const moveFile = async (file, newLocation) => {
 };
 
 const loadContact = async (fileName) => {
-  return FileSystem.readAsStringAsync(`${contactDirectory}/${fileName}`, {
+  const contactName = await regexName(fileName)
+  return FileSystem.readAsStringAsync(`${contactDirectory}/${contactName}`, {
     encoding: FileSystem.EncodingType.UTF8,
   });
 };
 
 export const loadImage = async (fileName) => {
-  return FileSystem.readAsStringAsync(`${imageDirectory}/${fileName}`, {
+  const contactName = await regexName(fileName)
+  return FileSystem.readAsStringAsync(`${imageDirectory}/${contactName}`, {
     encoding: FileSystem.EncodingType.Base64
 });
 }
 
 export const saveContact = async (contact) => {
-  const fileName = `${contactDirectory}/${contact.name}`;
-  console.log("Contact: " + typeof contact)
+  const contactName = await regexName(contact.name)
+  const fileName = `${contactDirectory}/${contactName}`;
   const contactString = JSON.stringify(contact)
-  console.log("contactString: " + typeof contactString)
   FileSystem.writeAsStringAsync(fileName, contactString)
-  const retContact = await loadContact(contact.name)
+  const retContact = await loadContact(contactName)
   return {
     name: retContact.name,
     phoneNumber: retContact.phoneNumber,
@@ -44,20 +52,23 @@ export const saveContact = async (contact) => {
 };
 
 export const getImagePath = (fileName) => {
-  return `${imageDirectory}/${fileName}`
+  const contactName = regexName(fileName)
+  return `${imageDirectory}/${contactName}`
 }
 
 export const saveImage = async (imageLocation, fileName) => {
-  await copyFile(imageLocation, `${imageDirectory}/${fileName}`);
+  const contactName = regexName(fileName)
+  await copyFile(imageLocation, `${imageDirectory}/${contactName}`);
   return {
-    name: fileName,
-    file: await loadImage(fileName)
+    name: contactName,
+    file: await loadImage(contactName)
   };
 }
 
 export const deleteContact = async (contactName) => {
-  const deleteContactDirectory = `${contactDirectory}/${contactName}`
-  const deleteImageDirectory = `${imageDirectory}/${contactName}`
+  const contactNameReg = regexName(contactName)
+  const deleteContactDirectory = `${contactDirectory}/${contactNameReg}`
+  const deleteImageDirectory = `${imageDirectory}/${contactNameReg}`
   FileSystem.deleteAsync(deleteContactDirectory)
   FileSystem.deleteAsync(deleteImageDirectory, { idempotent: true })
 }
@@ -80,7 +91,7 @@ export const getAllContacts = async () => {
     const contact = await loadContact(fileName)
     const parsedContact = JSON.parse(contact)
     return {
-      name: fileName,
+      name: parsedContact.name,
       phoneNumber: parsedContact.phoneNumber,
       thumbnailPhoto: parsedContact.thumbnailPhoto
     };
@@ -88,12 +99,14 @@ export const getAllContacts = async () => {
 };
 
 export const editContact = async (oldName, newContactInfo) => {
-  const fileName = `${contactDirectory}/${newContactInfo.name}`
+  const newContactName = await regexName(newContactInfo.name)
+  const oldContactName = await regexName(oldName)
+  const fileName = `${contactDirectory}/${newContactName}`
   if (oldName !== newContactInfo.name) {
-    await moveFile(`${contactDirectory}/${oldName}`, fileName)
-    await moveFile(`${imageDirectory}/${oldName}`, `${imageDirectory}/${newContactInfo.name}`)
+    await moveFile(`${contactDirectory}/${oldContactName}`, fileName)
+    await moveFile(`${imageDirectory}/${oldContactName}`, `${imageDirectory}/${newContactName}`)
   }
-  newContactInfo.thumbnailPhoto = `${imageDirectory}/${newContactInfo.name}`
+  newContactInfo.thumbnailPhoto = `${imageDirectory}/${newContactName}`
   const newContactInfoString = JSON.stringify(newContactInfo)
   FileSystem.writeAsStringAsync(fileName, newContactInfoString)
 }

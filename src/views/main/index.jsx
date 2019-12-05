@@ -8,6 +8,7 @@ import data from '../../resources/data.json'
 import styles from '../../views/main/styles'
 import { saveContact, getAllContacts, deleteContact, saveImage, getImagePath } from '../../services/fileService';
 import { takePhoto, selectFromCameraRoll } from '../../services/imageService';
+import { initializeAllContacts } from '../../services/contactsService';
 
 class Main extends React.Component {
   state = {
@@ -25,6 +26,7 @@ class Main extends React.Component {
   }
 
   async _fetchItems() {
+    await initializeAllContacts()
     this.setState({loadingContacts: true})
     const contacts = await getAllContacts()
     this.setState({ contacts: contacts, loadingContacts: false, filteredContacts: contacts })
@@ -135,14 +137,6 @@ deleteSelected() {
       filteredContacts: filteredOutput,
     });
   };
-
-  call = () => {
-    const contactNumber = {
-      number: '8970038',
-      prompt: false
-    }
-    call(contactNumber).catch(console.error);
-  }
 
 
   render() {

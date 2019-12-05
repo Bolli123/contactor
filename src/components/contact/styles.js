@@ -6,7 +6,6 @@ export default StyleSheet.create({
     height: 115,
     borderRadius: 115 / 2,
     overflow: 'hidden',
-    borderWidth: 3,
   },
   content: {
     flex: 3,

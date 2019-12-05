@@ -13,7 +13,7 @@ export default StyleSheet.create({
     flex: 1,
     alignItems: 'center',
     justifyContent: 'center',
-    flexGrow: 0.3,
+    flexGrow: 0.35,
     borderRadius: 5,
     width: winWidth - 75,
     backgroundColor: 'white',

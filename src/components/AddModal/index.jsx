@@ -13,44 +13,45 @@ const AddModal = ({
     isOpen={isOpen}
     closeModal={closeModal}
   >
-    <TextInput
-      userInput={newContactName}
-      placeholder="Contact Name..."
-      defaultValue={contactName}
-    />
-    <TextInput
-      userInput={newContactNumber}
-      placeholder="Contact Number..."
-      defaultValue={contactNumber}
-    />
-    <View style={styles.iconContainer}>
-      <TouchableOpacity onPress={takePhoto}>
-        <Entypo
-          style={styles.icon}
-          name="camera"
+    <View style={styles.container}>
+      <TextInput
+        userInput={newContactName}
+        placeholder="Contact Name..."
+        defaultValue={contactName}
+      />
+      <TextInput
+        userInput={newContactNumber}
+        placeholder="Contact Number..."
+        defaultValue={contactNumber}
+      />
+      <View style={styles.iconContainer}>
+        <TouchableOpacity onPress={takePhoto}>
+          <Entypo
+            style={styles.icon}
+            name="camera"
+          />
+        </TouchableOpacity>
+        <TouchableOpacity onPress={selectFromCameraRoll}>
+          <Entypo
+            style={styles.icon}
+            name="image"
+          />
+        </TouchableOpacity>
+      </View>
+      <View style={styles.actionContainer}>
+        <Button
+          title="Submit"
+          onPress={() => submitContact()}
+          style={styles.action}
         />
-      </TouchableOpacity>
-      <TouchableOpacity onPress={selectFromCameraRoll}>
-        <Entypo
-          style={styles.icon}
-          name="image"
+        <Button
+          color="#d9534f"
+          title="Cancel"
+          onPress={closeModal}
+          style={styles.action}
         />
-      </TouchableOpacity>
+      </View>
     </View>
-    <TextInput
-      userInput={() => {}}
-      defaultValue={newPhoto}
-      editable={false}
-    />
-    <Button
-      color="#d9534f"
-      title="Cancel"
-      onPress={closeModal}
-    />
-    <Button
-      title="Submit"
-      onPress={() => submitContact()}
-    />
   </Modal>
 );
 

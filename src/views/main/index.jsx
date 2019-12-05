@@ -144,6 +144,7 @@ deleteSelected() {
     call(contactNumber).catch(console.error);
   }
 
+
   render() {
     const { selectedContacts, filteredContacts, isAddModalOpen, value } = this.state;
     return (

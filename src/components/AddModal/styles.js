@@ -6,10 +6,18 @@ export default StyleSheet.create({
     flex: 1,
   },
   iconContainer: {
-    flex: 1,
+    flex: 0.2,
+    flexDirection: 'row',
+  },
+  actionContainer: {
     flexDirection: 'row',
   },
   container: {
-    flex: 1
+    flex: 1,
+    alignItems: 'center',
+    flexDirection: 'column',
+  },
+  action: {
+    margin: 5,
   }
 })

@@ -6,7 +6,7 @@ import AddModal from '../../components/AddModal';
 import styles from '../../views/details/styles';
 import { Entypo } from '@expo/vector-icons';
 import EditButton from '../../components/editbutton';
-import { editContact, saveImage } from '../../services/fileService'
+import { editContact, saveImage, getImagePath } from '../../services/fileService'
 import { takePhoto, selectFromCameraRoll } from '../../services/imageService'
 
 
@@ -45,20 +45,22 @@ class Details extends React.Component {
     this.setState({newPhoneNumber: phoneNumber})
   }
 
-  editContact() {
+  async editContact() {
     const { name, newContactName, newPhoneNumber, newPhoto, thumbnailPhoto } = this.state
     if (newContactName === '' || newPhoneNumber === '' || newPhoto === '') {
       return
     }
+    let photo = newPhoto
+    if (thumbnailPhoto !== newPhoto) {
+      await saveImage(newPhoto, name)
+      photo = getImagePath(name)
+    }
     const newContact = {
       name: newContactName,
       phoneNumber: newPhoneNumber,
-      thumbnailPhoto: newPhoto
+      thumbnailPhoto: photo
     }
-    editContact(name, newContact)
-    if (thumbnailPhoto !== newPhoto) {
-      saveImage(newPhoto, newContactName)
-    }
+    await editContact(name, newContact)
     this.setState({
       name: newContactName,
       phoneNumber: newPhoneNumber,

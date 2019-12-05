@@ -39,6 +39,7 @@ export const loadImage = async (fileName) => {
 }
 
 export const saveContact = async (contact) => {
+  console.log(contact)
   const contactName = await regexName(contact.name)
   const fileName = `${contactDirectory}/${contactName}`;
   const contactString = JSON.stringify(contact)

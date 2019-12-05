@@ -35,7 +35,6 @@ class Main extends React.Component {
 
   async _fetchItems() {
     this.setState({loadingContacts: true})
-    initializeAllContacts()
     const contacts = await getAllContacts()
     this.setState({ contacts: contacts, loadingContacts: false, filteredContacts: contacts })
   }

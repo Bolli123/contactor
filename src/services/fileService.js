@@ -1,12 +1,13 @@
 import * as FileSystem from 'expo-file-system';
+var iceChars = require("icelandic-characters");
 
 const contactDirectory = `${FileSystem.documentDirectory}contacts`;
 const imageDirectory = `${FileSystem.documentDirectory}images`;
 
 export const regexName = async (fileName) => {
   // const replaceLetters = fileName.allReplace({'ó': 'o', 'Ó': 'O', 'í': })
-  const regExpr = /[^a-zA-Z0-9]/ig;
-  const outString = fileName.replace(regExpr, '');
+  console.log(fileName)
+  const outString = iceChars.replaceIcelandicCharacters(fileName)
   console.log(outString)
   return outString;
 }

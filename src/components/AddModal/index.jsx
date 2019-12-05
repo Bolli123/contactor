@@ -1,13 +1,13 @@
 import React from 'react';
 import { Entypo } from '@expo/vector-icons';
 import PropTypes from 'prop-types';
-import { TouchableOpacity, View, Button } from 'react-native';
+import { TouchableOpacity, View, Button, Text } from 'react-native';
 import TextInput from '../textinput'
 import Modal from '../Modal';
 import styles from './styles';
 
 const AddModal = ({
-  isOpen, closeModal, takePhoto, selectFromCameraRoll, addContact, newContactName, newContactNumber, contactName, contactNumber
+  isOpen, closeModal, takePhoto, selectFromCameraRoll, submitContact, newContactName, newContactNumber, contactName, contactNumber, newPhoto
 }) => (
   <Modal
     isOpen={isOpen}
@@ -37,9 +37,19 @@ const AddModal = ({
         />
       </TouchableOpacity>
     </View>
+    <TextInput
+      userInput={() => {}}
+      defaultValue={newPhoto}
+      editable={false}
+    />
     <Button
-      title="Add Contact"
-      onPress={() => addContact()}
+      color="#d9534f"
+      title="Cancel"
+      onPress={closeModal}
+    />
+    <Button
+      title="Submit"
+      onPress={() => submitContact()}
     />
   </Modal>
 );
@@ -49,15 +59,17 @@ AddModal.propTypes = {
   closeModal: PropTypes.func.isRequired,
   takePhoto: PropTypes.func.isRequired,
   selectFromCameraRoll: PropTypes.func.isRequired,
-  addContact: PropTypes.func.isRequired,
+  submitContact: PropTypes.func.isRequired,
   newContactName: PropTypes.func.isRequired,
   newContactNumber: PropTypes.func.isRequired,
+  newPhoto: PropTypes.string,
   contactName: PropTypes.string,
   contactNumber: PropTypes.string
 }
 
 AddModal.defaultProps = {
   contactName: '',
-  contactNumber: ''
+  contactNumber: '',
+  newPhoto: ''
 }
 export default AddModal;

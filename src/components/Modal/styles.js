@@ -1,6 +1,6 @@
 import { StyleSheet, Dimensions, Keyboard } from 'react-native';
 
-const { width: winWidth } = Dimensions.get('window')
+const { width: winWidth, height: winHeight } = Dimensions.get('window')
 
 
 export default StyleSheet.create({
@@ -8,7 +8,6 @@ export default StyleSheet.create({
     flex: 1,
     justifyContent: 'center',
     alignItems: 'center',
-    height: Dimensions.get('window').height * 0.3,
   },
   body: {
     flex: 1,

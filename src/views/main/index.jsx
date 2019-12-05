@@ -178,7 +178,7 @@ deleteSelected() {
           })}
           takePhoto={() => this.takePhoto()}
           selectFromCameraRoll={() => this.selectFromCameraRoll()}
-          addContact={() => this.addContact()}
+          submitContact={() => this.addContact()}
           newContactName={(name) => this.setContactName(name)}
           newContactNumber={(number) => this.setContactPhoneNumber(number)}
          />

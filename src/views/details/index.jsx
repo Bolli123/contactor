@@ -6,6 +6,8 @@ import AddModal from '../../components/AddModal';
 import styles from '../../views/details/styles';
 import { Entypo } from '@expo/vector-icons';
 import EditButton from '../../components/editbutton';
+import { editContact } from '../../services/fileService'
+import { takePhoto, selectFromCameraRoll } from '../../services/imageService'
 
 
 class Details extends React.Component {
@@ -14,17 +16,69 @@ class Details extends React.Component {
     name: '',
     phoneNumber: '',
     editModalOpen: false,
-
+    newContactName: '',
+    newPhoneNumber: '',
+    newPhoto: ''
   }
+
   async componentDidMount() {
     const { navigation } = this.props
     const thumbnailPhoto = navigation.getParam('thumbnailPhoto', '')
     const name = navigation.getParam('name', '')
     const phoneNumber = navigation.getParam('phoneNumber', '')
-    this.setState({thumbnailPhoto: thumbnailPhoto})
-    this.setState({name: name})
-    this.setState({phoneNumber: phoneNumber})
+    this.setState({
+      thumbnailPhoto: thumbnailPhoto,
+      name: name,
+      phoneNumber: phoneNumber,
+      newContactName: name,
+      newPhoneNumber: phoneNumber,
+      newPhoto: thumbnailPhoto
+    })
     this.props.navigation.setParams({ toggleModal: this._toggleModal });
+  }
+
+  setContactName(name) {
+      this.setState({newContactName: name})
+  }
+
+  setContactPhoneNumber(phoneNumber) {
+    this.setState({newPhoneNumber: phoneNumber})
+  }
+
+  editContact() {
+    const { name, newContactName, newPhoneNumber, newPhoto } = this.state
+    console.log(newContactName)
+    console.log(newPhoneNumber)
+    console.log(newPhoto)
+    if (newContactName !== '' || newPhoneNumber !== '' || newPhoto !== '') {
+      return
+    }
+    const newContact = {
+      name: newContactName,
+      phoneNumber: newPhoneNumber,
+      thumbnailPhoto: newPhoto
+    }
+    editContact(name, newContact)
+    this.setState({
+      name: newContactName,
+      phoneNumber: newPhoneNumber,
+      thumbnailPhoto: newPhoto,
+      editModalOpen: false
+    })
+  }
+
+  async takePhoto() {
+    const photo = await takePhoto();
+    if (photo.length > 0) {
+      this.setState({newPhoto: photo})
+    }
+  }
+
+  async selectFromCameraRoll() {
+    const photo = await selectFromCameraRoll();
+    if (photo.length > 0) {
+      this.setState({newPhoto: photo})
+    }
   }
 
   _toggleModal = () => {
@@ -41,18 +95,24 @@ class Details extends React.Component {
     }
     call(contactNumber).catch(console.error);
   }
+
   static navigationOptions = ({ navigation }) => {
     return {
+      headerStyle: {
+        backgroundColor: '#6ea6ff'
+      },
+      headerTintColor: '#fff',
       headerTitle: 'Details',
       headerRight: () => (
         <EditButton
-          onPress={navigation.getParam('toggleModal')}
+          onEdit={navigation.getParam('toggleModal')}
         />
       ),
-    };
-  };
+    }
+  }
+
   render() {
-    const { thumbnailPhoto, name, phoneNumber, editModalOpen } = this.state;
+    const { thumbnailPhoto, name, phoneNumber, editModalOpen, newPhoto } = this.state;
     return (
       <View style={{ flex: 1}}>
         <View style={styles.container}>
@@ -76,16 +136,18 @@ class Details extends React.Component {
           isOpen={editModalOpen}
           closeModal={() => this.setState({
             editModalOpen: false ,
-            newPhoto: '',
-            newContactName: ''
+            newPhoto: thumbnailPhoto,
+            newContactName: name,
+            newContactNumber: phoneNumber
           })}
           takePhoto={() => this.takePhoto()}
           selectFromCameraRoll={() => this.selectFromCameraRoll()}
-          addContact={() => this.addContact()}
+          submitContact={() => this.editContact()}
           newContactName={(name) => this.setContactName(name)}
           newContactNumber={(number) => this.setContactPhoneNumber(number)}
           contactName={name}
           contactNumber={phoneNumber}
+          newPhoto={newPhoto}
          />
       </View>
     )

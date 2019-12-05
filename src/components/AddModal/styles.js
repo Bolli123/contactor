@@ -8,5 +8,8 @@ export default StyleSheet.create({
   iconContainer: {
     flex: 1,
     flexDirection: 'row',
+  },
+  container: {
+    flex: 1
   }
 })

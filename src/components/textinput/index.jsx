@@ -5,7 +5,10 @@ export default class InputComponent extends Component {
   constructor(props) {
     super(props);
     this.state = { text: '' };
-    this.setState({ text: props.defaultValue })
+  }
+
+  componentDidMount() {
+    this.setState({ text: this.props.defaultValue })
   }
 
   onChange(text) {
@@ -21,6 +24,8 @@ export default class InputComponent extends Component {
           onChangeText={(text) => this.onChange(text)}
           placeholder={this.props.placeholder}
           value={ this.state.text }
+          editable={ this.props.editable }
+          selectTextOnFocus={ this.props.editable }
         />
       </View>
     );

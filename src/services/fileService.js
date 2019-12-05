@@ -4,8 +4,9 @@ const contactDirectory = `${FileSystem.documentDirectory}contacts`;
 const imageDirectory = `${FileSystem.documentDirectory}images`;
 
 export const regexName = async (fileName) => {
-  console.log(fileName)
-  const outString = fileName.replace(/[áéíóúýÁÉÍÓÚÝþðæÐÞÆöÖ`~!@#$%^&*()_|+\-=?;:'",.<>\{\}\[\]\\\/]/gi, '');
+  // const replaceLetters = fileName.allReplace({'ó': 'o', 'Ó': 'O', 'í': })
+  const regExpr = /[^a-zA-Z0-9]/ig;
+  const outString = fileName.replace(regExpr, '');
   console.log(outString)
   return outString;
 }

@@ -61,7 +61,7 @@ export const deleteContact = async (contactName) => {
   const deleteContactDirectory = `${contactDirectory}/${contactName}`
   const deleteImageDirectory = `${imageDirectory}/${contactName}`
   FileSystem.deleteAsync(deleteContactDirectory)
-  FileSystem.deleteAsync(deleteImageDirectory)
+  FileSystem.deleteAsync(deleteImageDirectory, { idempotent: true })
 }
 
 const setUpDirectory = async () => {

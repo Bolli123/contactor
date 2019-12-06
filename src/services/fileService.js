@@ -5,6 +5,7 @@ const contactDirectory = `${FileSystem.documentDirectory}contacts`;
 const imageDirectory = `${FileSystem.documentDirectory}images`;
 
 export const regexName = async (fileName) => {
+  fileName = `${fileName}`
   const outString = iceChars.replaceIcelandicCharacters(fileName)
   return outString;
 }
@@ -38,7 +39,6 @@ export const loadImage = async (fileName) => {
 }
 
 export const saveContact = async (contact) => {
-  console.log(contact)
   const contactName = await regexName(contact.name)
   const fileName = `${contactDirectory}/${contactName}`;
   const contactString = JSON.stringify(contact)
@@ -51,13 +51,16 @@ export const saveContact = async (contact) => {
   };
 };
 
-export const getImagePath = (fileName) => {
-  const contactName = regexName(fileName)
+export const getImagePath = async (fileName) => {
+  console.log(`${imageDirectory}/${fileName}`)
+  const contactName = await regexName(fileName)
+  console.log(contactName)
+  console.log(`${imageDirectory}/${contactName}`)
   return `${imageDirectory}/${contactName}`
 }
 
 export const saveImage = async (imageLocation, fileName) => {
-  const contactName = regexName(fileName)
+  const contactName = await regexName(fileName)
   await copyFile(imageLocation, `${imageDirectory}/${contactName}`);
   return {
     name: contactName,
@@ -87,6 +90,9 @@ const setUpDirectory = async () => {
 export const getAllContacts = async () => {
   await setUpDirectory();
   const result = await FileSystem.readDirectoryAsync(contactDirectory);
+  const img = await FileSystem.readDirectoryAsync(imageDirectory)
+  console.log(result)
+  console.log(img)
   return Promise.all(result.map(async (fileName) => {
     const contact = await loadContact(fileName)
     const parsedContact = JSON.parse(contact)

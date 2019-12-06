@@ -8,6 +8,7 @@ import { Entypo } from '@expo/vector-icons';
 import EditButton from '../../components/editbutton';
 import { editContact, saveImage, getImagePath } from '../../services/fileService'
 import { takePhoto, selectFromCameraRoll } from '../../services/imageService'
+import { _fetchItems } from '../main/index'
 
 
 class Details extends React.Component {
@@ -46,7 +47,6 @@ class Details extends React.Component {
   }
 
   async editContact() {
-    const { navigation } = this.props
     const { name, newContactName, newPhoneNumber, newPhoto, thumbnailPhoto } = this.state
     if (newContactName === '' || newPhoneNumber === '' || newPhoto === '') {
       return
@@ -68,7 +68,6 @@ class Details extends React.Component {
       thumbnailPhoto: newPhoto,
       editModalOpen: false
     })
-    navigation.getParam('updateContacts')
   }
 
   async takePhoto() {

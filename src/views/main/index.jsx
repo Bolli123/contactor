@@ -34,6 +34,11 @@ class Main extends React.Component {
     this.setState({ isAddModalOpen: !isAddModalOpen})
   }
 
+  async _fetchItems() {
+    this.setState({loadingContacts: true})
+    const contacts = await getAllContacts()
+    this.setState({ contacts: contacts, loadingContacts: false, filteredContacts: contacts })
+  }
   onContactLongPress(name) {
     const { selectedContacts } = this.state;
     if (selectedContacts.indexOf(name) !== -1) {

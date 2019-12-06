@@ -55,8 +55,8 @@ class Details extends React.Component {
     }
     let photo = newPhoto
     if (thumbnailPhoto !== newPhoto) {
-      await saveImage(newPhoto, name)
-      photo = await getImagePath(name)
+      await saveImage(newPhoto, newContactName)
+      photo = await loadImage(newContactName)
     }
     const newContact = {
       name: newContactName,

@@ -6,6 +6,7 @@ import ContactList from '../../components/contactlist';
 import AddModal from '../../components/AddModal';
 import AddButton from '../../components/addbutton'
 import DeleteButton from '../../components/deletebutton'
+import SyncButton from '../../components/syncbutton'
 import data from '../../resources/data.json'
 import styles from '../../views/main/styles'
 import { saveContact, getAllContacts, deleteContact, saveImage, getImagePath } from '../../services/fileService';
@@ -40,7 +41,7 @@ class Main extends React.Component {
     this.setState({ contacts: contacts, loadingContacts: false, filteredContacts: contacts })
   }
 
-  async syncContacts() {
+  syncContacts = async () => {
     this.setState({loadingContacts: true})
     await initializeAllContacts()
     const contacts = await getAllContacts()
@@ -154,7 +155,11 @@ deleteSelected() {
   static navigationOptions = ({ navigation }) => {
     return {
       headerStyle: {
-        backgroundColor: '#6ea6ff'
+        backgroundColor: '#6ea6ff',
+      },
+      headerTitleStyle: {
+        textAlign: 'center',
+        flex: 1
       },
       headerTintColor: '#fff',
       headerTitle: 'Contacts',
@@ -164,7 +169,7 @@ deleteSelected() {
         />
       ),
       headerLeft: () => (
-        <Button
+        <SyncButton
           onPress={navigation.getParam('syncContacts')}
           title="Sync Contacts"
         />

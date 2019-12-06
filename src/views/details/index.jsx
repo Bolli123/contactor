@@ -103,6 +103,10 @@ class Details extends React.Component {
       headerStyle: {
         backgroundColor: '#6ea6ff'
       },
+      headerTitleStyle: {
+        textAlign: 'center',
+        flex: 1
+      },
       headerTintColor: '#fff',
       headerTitle: 'Details',
       headerRight: () => (

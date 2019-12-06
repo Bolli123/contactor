@@ -2,19 +2,19 @@ import { StyleSheet } from 'react-native';
 
 export default StyleSheet.create({
   right: {
-    fontSize: 15,
+    fontSize: 20,
     fontWeight: 'bold',
-    color: '#fff'
+    color: '#fff',
+    marginLeft: 5
   },
   icon: {
     fontSize: 20,
-    marginLeft: 5,
     color: '#fff',
   },
   container: {
     flex: 1,
     flexDirection: 'row',
-    marginRight: 20,
+    marginLeft: 20,
     alignItems: 'center',
   }
 })

@@ -13,7 +13,7 @@ const SyncButton = ({ onSync }) => (
       style={styles.icon}
       name="ccw"
     />
-    <Text style={styles.right}>Sync Contacts</Text>
+    <Text style={styles.right}>Sync</Text>
   </TouchableOpacity>
 )
 

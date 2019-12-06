@@ -66,7 +66,7 @@ export const saveImage = async (imageLocation, fileName) => {
 }
 
 export const deleteContact = async (contactName) => {
-  const contactNameReg = regexName(contactName)
+  const contactNameReg = await regexName(contactName)
   const deleteContactDirectory = `${contactDirectory}/${contactNameReg}`
   const deleteImageDirectory = `${imageDirectory}/${contactNameReg}`
   FileSystem.deleteAsync(deleteContactDirectory)

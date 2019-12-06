@@ -91,7 +91,6 @@ class Details extends React.Component {
 
   _toggleModal = () => {
     const { thumbnailPhoto } = this.state
-    console.log(thumbnailPhoto)
     const { editModalOpen } = this.state
     this.setState({ editModalOpen: !editModalOpen})
   }

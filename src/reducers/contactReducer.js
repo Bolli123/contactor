@@ -7,9 +7,7 @@ export default function (state = [], action) {
     case constants.EDIT_CONTACT:
       for (let i = 0; i < state.length; i++) {
         if (state[i].name === action.payload.name) {
-          console.log(state[i])
           state[i] = action.payload.contact
-          console.log(state[i])
         }
       }
       return state

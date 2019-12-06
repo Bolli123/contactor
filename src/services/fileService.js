@@ -52,10 +52,7 @@ export const saveContact = async (contact) => {
 };
 
 export const getImagePath = async (fileName) => {
-  console.log(`${imageDirectory}/${fileName}`)
   const contactName = await regexName(fileName)
-  console.log(contactName)
-  console.log(`${imageDirectory}/${contactName}`)
   return `${imageDirectory}/${contactName}`
 }
 
@@ -91,8 +88,6 @@ export const getAllContacts = async () => {
   await setUpDirectory();
   const result = await FileSystem.readDirectoryAsync(contactDirectory);
   const img = await FileSystem.readDirectoryAsync(imageDirectory)
-  console.log(result)
-  console.log(img)
   return Promise.all(result.map(async (fileName) => {
     const contact = await loadContact(fileName)
     const parsedContact = JSON.parse(contact)
@@ -110,9 +105,13 @@ export const editContact = async (oldName, newContactInfo) => {
   const fileName = `${contactDirectory}/${newContactName}`
   if (oldName !== newContactInfo.name) {
     await moveFile(`${contactDirectory}/${oldContactName}`, fileName)
-    await moveFile(`${imageDirectory}/${oldContactName}`, `${imageDirectory}/${newContactName}`)
+    if (newContactInfo.thumbnailPhoto !== 'https://d2x5ku95bkycr3.cloudfront.net/App_Themes/Common/images/profile/0_200.png') {
+      await moveFile(`${imageDirectory}/${oldContactName}`, `${imageDirectory}/${newContactName}`)
+    }
   }
-  newContactInfo.thumbnailPhoto = `${imageDirectory}/${newContactName}`
+  if (newContactInfo.thumbnailPhoto !== 'https://d2x5ku95bkycr3.cloudfront.net/App_Themes/Common/images/profile/0_200.png') {
+    newContactInfo.thumbnailPhoto = `${imageDirectory}/${newContactName}`
+  }
   const newContactInfoString = JSON.stringify(newContactInfo)
   FileSystem.writeAsStringAsync(fileName, newContactInfoString)
 }

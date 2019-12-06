@@ -54,7 +54,7 @@ class Details extends React.Component {
     let photo = newPhoto
     if (thumbnailPhoto !== newPhoto) {
       await saveImage(newPhoto, name)
-      photo = getImagePath(name)
+      photo = await getImagePath(name)
     }
     const newContact = {
       name: newContactName,
@@ -65,7 +65,7 @@ class Details extends React.Component {
     this.setState({
       name: newContactName,
       phoneNumber: newPhoneNumber,
-      thumbnailPhoto: newPhoto,
+      thumbnailPhoto: photo,
       editModalOpen: false
     })
   }

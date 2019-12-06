@@ -1,5 +1,5 @@
 import React from 'react';
-import { View, Text } from 'react-native';
+import { View, Text, Button } from 'react-native';
 import { SearchBar } from 'react-native-elements';
 import Toolbar from '../../components/Toolbar';
 import ContactList from '../../components/contactlist';
@@ -23,12 +23,12 @@ class Main extends React.Component {
     newPhoto: '',
     newPhoneNumber: '',
     }
+
   async componentDidMount() {
-    initializeAllContacts()
     this.props.navigation.setParams({ toggleModal: this._toggleModal });
+    this.props.navigation.setParams({ syncContacts: this.syncContacts });
     await this._fetchItems()
   }
-
   _toggleModal = () => {
     const { isAddModalOpen } = this.state
     this.setState({ isAddModalOpen: !isAddModalOpen})
@@ -39,6 +39,14 @@ class Main extends React.Component {
     const contacts = await getAllContacts()
     this.setState({ contacts: contacts, loadingContacts: false, filteredContacts: contacts })
   }
+
+  async syncContacts() {
+    this.setState({loadingContacts: true})
+    await initializeAllContacts()
+    const contacts = await getAllContacts()
+    this.setState({ contacts: contacts, loadingContacts: false, filteredContacts: contacts })
+  }
+
   onContactLongPress(name) {
     const { selectedContacts } = this.state;
     if (selectedContacts.indexOf(name) !== -1) {
@@ -153,6 +161,12 @@ deleteSelected() {
       headerRight: () => (
         <AddButton
           onAdd={navigation.getParam('toggleModal')}
+        />
+      ),
+      headerLeft: () => (
+        <Button
+          onPress={navigation.getParam('syncContacts')}
+          title="Sync Contacts"
         />
       ),
     }

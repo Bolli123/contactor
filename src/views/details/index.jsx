@@ -1,5 +1,5 @@
 import React from 'react';
-import { View, Text, Image, Button, TouchableOpacity } from 'react-native';
+import { View, Text, Image, Button, TouchableOpacity, Platform } from 'react-native';
 import call from 'react-native-phone-call';
 import Toolbar from '../../components/Toolbar';
 import AddModal from '../../components/AddModal';
@@ -8,7 +8,9 @@ import { Entypo } from '@expo/vector-icons';
 import EditButton from '../../components/editbutton';
 import { editContact, saveImage, getImagePath } from '../../services/fileService'
 import { takePhoto, selectFromCameraRoll } from '../../services/imageService'
-import { _fetchItems } from '../main/index'
+import { connect } from 'react-redux'
+import { actionEditContact } from '../../actions/contactActions'
+import defaultImage from '../../resources/0_200.png'
 
 
 class Details extends React.Component {
@@ -68,6 +70,9 @@ class Details extends React.Component {
       thumbnailPhoto: photo,
       editModalOpen: false
     })
+    const { contacts } = this.state
+    const { actionEditContact } = this.props;
+    actionEditContact(name, newContact)
   }
 
   async takePhoto() {
@@ -85,6 +90,8 @@ class Details extends React.Component {
   }
 
   _toggleModal = () => {
+    const { thumbnailPhoto } = this.state
+    console.log(thumbnailPhoto)
     const { editModalOpen } = this.state
     this.setState({ editModalOpen: !editModalOpen})
   }
@@ -125,7 +132,8 @@ class Details extends React.Component {
           <Image
             style={styles.image}
             resizeMode="cover"
-            source={{ uri: thumbnailPhoto }}
+            defaultSource={require('../../resources/0_200.png')}
+            source={{ uri: thumbnailPhoto === 'https://d2x5ku95bkycr3.cloudfront.net/App_Themes/Common/images/profile/0_200.png' ? 'https://d2x5ku95bkycr3.cloudfront.net/App_Themes/Common/images/profile/0_200.png' : `data:image/jpeg;base64,${thumbnailPhoto}`}}
           />
           <Text style={styles.name}>{name}</Text>
           <TouchableOpacity onPress={this.call} style={styles.numberContainer}>
@@ -160,4 +168,8 @@ class Details extends React.Component {
   }
 }
 
-export default Details;
+const mapStateToProps = reduxStoreState => {
+  return {contacts: reduxStoreState.contact}
+}
+
+export default connect(mapStateToProps, { actionEditContact })(Details);

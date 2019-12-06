@@ -1,13 +1,13 @@
 import * as constants from '../constants';
 
-export const actionAddContact = (id, name, phoneNumber, thumbnailPhoto) => ({
-  type: constants.ADD_CONTACT,
+export const actionEditContact = (name, contact) => ({
+  type: constants.EDIT_CONTACT,
   payload: {
-    id, name, phoneNumber, thumbnailPhoto
+    name, contact
   }
 });
 
-export const actionDeleteContacts = (contacts) => ({
-  type: constants.DELETE_CONTACTS,
+export const actionSetContacts = (contacts) => ({
+  type: constants.SET_CONTACTS,
   payload: { contacts }
 });

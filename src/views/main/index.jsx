@@ -9,14 +9,16 @@ import DeleteButton from '../../components/deletebutton'
 import SyncButton from '../../components/syncbutton'
 import data from '../../resources/data.json'
 import styles from '../../views/main/styles'
-import { saveContact, getAllContacts, deleteContact, saveImage, getImagePath } from '../../services/fileService';
+import { saveContact, getAllContacts, deleteContact, saveImage, getImagePath, loadImage } from '../../services/fileService';
 import { takePhoto, selectFromCameraRoll } from '../../services/imageService';
 import { initializeAllContacts } from '../../services/contactsService';
+import { connect } from 'react-redux'
+import { actionSetContacts } from '../../actions/contactActions'
 
 class Main extends React.Component {
   state = {
-    contacts: [],
-    filteredContacts: [],
+    contacts: this.props.contacts,
+    filteredContacts: this.props.contacts,
     selectedContacts: [],
     isAddModalOpen: false,
     loadingContacts: false,
@@ -24,7 +26,6 @@ class Main extends React.Component {
     newPhoto: '',
     newPhoneNumber: '',
     }
-
   async componentDidMount() {
     this.props.navigation.setParams({ toggleModal: this._toggleModal });
     this.props.navigation.setParams({ syncContacts: this.syncContacts });
@@ -38,14 +39,18 @@ class Main extends React.Component {
   async _fetchItems() {
     this.setState({loadingContacts: true})
     const contacts = await getAllContacts()
-    this.setState({ contacts: contacts, loadingContacts: false, filteredContacts: contacts })
+    const { actionSetContacts } = this.props
+    actionSetContacts(contacts)
+    this.setState({ loadingContacts: false, contacts: this.props.contacts, filteredContacts: this.props.contacts })
   }
 
   syncContacts = async () => {
     this.setState({loadingContacts: true})
     await initializeAllContacts()
     const contacts = await getAllContacts()
-    this.setState({ contacts: contacts, loadingContacts: false, filteredContacts: contacts })
+    const { actionSetContacts } = this.props
+    actionSetContacts(contacts)
+    this.setState({ contacts: this.props.contacts, loadingContacts: false, filteredContacts: this.props.contacts })
   }
 
   onContactLongPress(name) {
@@ -109,7 +114,7 @@ deleteSelected() {
       return
     }
     await saveImage(newPhoto, newContactName)
-    const photo = await getImagePath(newContactName)
+    const photo = await loadImage(newContactName)
     const newContactObject = {
       name: newContactName,
       phoneNumber: newPhoneNumber,
@@ -170,7 +175,7 @@ deleteSelected() {
       ),
       headerLeft: () => (
         <SyncButton
-          onPress={navigation.getParam('syncContacts')}
+          onSync={navigation.getParam('syncContacts')}
           title="Sync Contacts"
         />
       ),
@@ -215,4 +220,8 @@ deleteSelected() {
   }
 }
 
-export default Main; // Returns a connected component
+const mapStateToProps = reduxStoreState => {
+  return {contacts: reduxStoreState.contact}
+}
+
+export default connect(mapStateToProps, { actionSetContacts })(Main); // Returns a connected component

@@ -4,6 +4,8 @@ import { withNavigation } from 'react-navigation';
 import PropTypes from 'prop-types';
 import styles from './styles'
 import { Entypo } from '@expo/vector-icons';
+import { loadImage } from '../../services/fileService'
+import defaultImage from '../../resources/0_200.png'
 
 const Contact = ({
   name, thumbnailPhoto, phoneNumber, onLongPress, isSelected, navigation: { navigate }
@@ -25,7 +27,8 @@ const Contact = ({
       <Image
         style={styles.image}
         resizeMode="cover"
-        source={{ uri: thumbnailPhoto }}
+        source={{ uri: thumbnailPhoto === 'https://d2x5ku95bkycr3.cloudfront.net/App_Themes/Common/images/profile/0_200.png' ? 'https://d2x5ku95bkycr3.cloudfront.net/App_Themes/Common/images/profile/0_200.png' : `data:image/jpeg;base64,${thumbnailPhoto}`}}
+        defaultSource={defaultImage}
       />
       <View style={styles.content}>
         <Text style={styles.text}>

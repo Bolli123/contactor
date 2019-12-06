@@ -42,7 +42,7 @@ export const saveContact = async (contact) => {
   const contactName = await regexName(contact.name)
   const fileName = `${contactDirectory}/${contactName}`;
   const contactString = JSON.stringify(contact)
-  FileSystem.writeAsStringAsync(fileName, contactString)
+  await FileSystem.writeAsStringAsync(fileName, contactString)
   const retContact = await loadContact(contactName)
   return {
     name: retContact.name,

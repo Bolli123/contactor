@@ -1,13 +1,16 @@
 import * as constants from '../constants';
-import data from '../resources/data.json';
 
-export default function (state = data.contacts, action) {
+export default function (state = [], action) {
   switch (action.type) {
-    case constants.ADD_CONTACT:
-      state.push(action.payload)
-      return state
-    case constants.DELETE_CONTACTS:
+    case constants.SET_CONTACTS:
       return action.payload.contacts
-    default: return state;
+    case constants.EDIT_CONTACT:
+      for (let i = 0; i < state.length; i++) {
+        if (state[i].name === action.payload.name) {
+          state[i] = action.payload.contact
+        }
+      }
+      return state
+    default: return state
   }
 }

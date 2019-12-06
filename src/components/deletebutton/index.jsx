@@ -15,12 +15,12 @@ const DeleteButton = ({ onDelete, selected }) => (
 
 DeleteButton.propTypes = {
   onDelete: PropTypes.func,
-  selected: PropTypes.string
+  selected: PropTypes.number
 }
 DeleteButton.defaultProps = {
   onDelete: () => {
 
   },
-  selected: ''
+  selected: 0
 }
 export default DeleteButton;

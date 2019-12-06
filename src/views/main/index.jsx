@@ -41,7 +41,7 @@ class Main extends React.Component {
     const contacts = await getAllContacts()
     const { actionSetContacts } = this.props
     actionSetContacts(contacts)
-    this.setState({ loadingContacts: false })
+    this.setState({ loadingContacts: false, contacts: this.props.contacts, filteredContacts: this.props.contacts })
   }
 
   syncContacts = async () => {

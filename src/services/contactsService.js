@@ -20,8 +20,12 @@ export const initializeAllContacts = async () => {
         const fileName = `${contactDirectory}/${data[i].firstName}`;
         let photo = 'https://d2x5ku95bkycr3.cloudfront.net/App_Themes/Common/images/profile/0_200.png'
         let name = ''
+        let number = ''
         let lastName = data[i].lastName
         // If contact has photo
+        if (data[i].phoneNumbers[0] !== undefined) {
+          number = data[i].phoneNumbers[0].number
+        }
         if (data[i].firstName == undefined ) {
           name = data[i].phoneNumbers[0].number
         } else {
@@ -37,7 +41,7 @@ export const initializeAllContacts = async () => {
         photo = await loadImage(name)
         const contact = {
           name: name,
-          phoneNumber: data[i].phoneNumbers[0].number,
+          phoneNumber: number,
           thumbnailPhoto: photo,
         }
 

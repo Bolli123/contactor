@@ -36,9 +36,9 @@ export const initializeAllContacts = async () => {
         }
         if (data[i].imageAvailable) {
           photo = data[i].image.uri
+          await saveImage(photo, name)
+          photo = await loadImage(name)
         }
-        await saveImage(photo, name)
-        photo = await loadImage(name)
         const contact = {
           name: name,
           phoneNumber: number,
@@ -47,7 +47,6 @@ export const initializeAllContacts = async () => {
 
         await saveContact(contact)
       } catch(error) {
-        console.log(error)
         continue
       }
   }

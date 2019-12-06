@@ -1,4 +1,4 @@
-# contactor
+# Contactor
 
 # Made by Computer science students in HR University, as a 3rd semester final project. - 2019/12
 
